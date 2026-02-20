@@ -86,6 +86,6 @@ if __name__ == "__main__":
     
     R, t, mask = geo.estimate_pose(pts1, pts2)
     
-    print("✅ 极线几何模块测试通过！")
+    print("极线几何模块测试通过")
     print("解算出的旋转矩阵 R (应接近单位矩阵):\n", R)
     print("解算出的平移向量 t (应主要在 Z 轴方向):\n", t)
