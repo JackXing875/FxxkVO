@@ -1,63 +1,78 @@
+import os
 import cv2
 import yaml
-import os
 from src.tracker import VisualOdometryTracker
-from src.visualizer import TrajectoryVisualizer3D  # 引入我们刚写的 3D 渲染器
+from src.visualizer import TrajectoryVisualizer3D
 
 def main():
-    print("🚀 DeepVO 系统启动...")
+    """Main entry point for the DeepVO pipeline.
+
+    Orchestrates the visual odometry process by loading configurations, 
+    initializing the tracking engine, and managing the real-time 
+    visualization loop.
+    """
+    print("LiveVO System Initializing...")
     
-    with open("configs/kitti_config.yaml", "r") as f:
+    # Load system configurations from the YAML file.
+    config_path = "configs/kitti_config.yaml"
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
         
-    tracker = VisualOdometryTracker(config, "weights/superpoint_v1.pth")
+    # Initialize the Visual Odometry Tracker with pre-trained SuperPoint weights.
+    weights_path = "weights/superpoint_v1.pth"
+    tracker = VisualOdometryTracker(config, weights_path)
     
+    # Initialize the video stream.
     video_path = config['video_path']
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        raise RuntimeError(f"无法打开视频文件: {video_path}")
+        raise RuntimeError(f"Failed to open video file at: {video_path}")
         
-    print(f"✅ 成功加载视频: {video_path}")
-    print("开始逐帧分析... (3D 弹窗即将出现！)")
+    print(f"Video source loaded: {video_path}")
+    print("Starting frame-by-frame analysis. Interactive 3D visualizer will be active.")
 
-    # 1. 初始化 3D 渲染引擎
+    # Initialize the 3D trajectory visualization engine.
     viz3d = TrajectoryVisualizer3D()
     
-    frame_id = 0
+    frame_count = 0
     while True:
-        ret, frame = cap.read()
-        if not ret:
-            print("视频读取完毕！")
+        success, frame = cap.read()
+        if not success:
+            print("Video stream processing completed.")
             break
             
+        # Standardize frame resolution based on configuration.
         frame = cv2.resize(frame, (config['image']['width'], config['image']['height']))
 
-        # 获取当前帧的 3D 坐标 (X, Y, Z)
+        # Execute tracking pipeline to retrieve global 3D coordinates (X, Y, Z).
         pos, debug_img = tracker.process_frame(frame)
         x, y, z = pos[0][0], pos[1][0], pos[2][0]
         
-        # 2. 实时更新 3D 轨迹图！
+        # Real-time update of the 3D trajectory plot.
         viz3d.update(x, y, z)
         
-        # 我们依然保留 OpenCV 的窗口，用来实时看神经网络提取特征点的工作状态
+        # Display the feature tracking dashboard for visual inspection.
         cv2.imshow("DeepVO Feature Tracker (Press 'q' to quit)", debug_img)
 
-        frame_id += 1
+        frame_count += 1
         
+        # Terminate loop if user presses 'q'.
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
+    # Release hardware resources.
     cap.release()
     cv2.destroyAllWindows()
     
-    print("💾 计算完成，请在 3D 窗口中自由拖拽查看轨迹！(关闭图形窗口以结束程序)")
+    print("Computation finished. 3D trajectory can be manipulated in the interactive window.")
     
-    # 告诉它把截图保存在哪里
-    os.makedirs(config['output_dir'], exist_ok=True)
-    save_file = os.path.join(config['output_dir'], "trajectory_3d.png")
+    # Define the output directory and file path for the final result.
+    output_dir = config['output_dir']
+    os.makedirs(output_dir, exist_ok=True)
+    save_path = os.path.join(output_dir, "trajectory_3d.png")
     
-    # 3. 保持 3D 窗口开启，并自动截图！
-    viz3d.close(save_path=save_file)
+    # Finalize the visualization session and export high-resolution capture.
+    viz3d.close(save_path=save_path)
 
 if __name__ == "__main__":
     main()
