@@ -42,6 +42,8 @@ DeepVO/
 - **Clone & Dependencies**:
 ```bash
 git clone https://github.com/JackXing875/DeepVO.git
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 

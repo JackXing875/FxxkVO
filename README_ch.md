@@ -26,7 +26,7 @@ DeepVO/
 ├── configs/          # 相机内参及系统超参数配置
 ├── data/             # 输入视频数据及输出轨迹日志
 ├── src/
-│   ├── feature/      # SuperPoint 网络实现 (Google 代码规范)
+│   ├── feature/      # SuperPoint 网络实现 
 │   ├── geometry/     # 极线几何求解与位姿恢复
 │   ├── tracker.py    # VO 状态机与关键帧逻辑
 │   └── visualizer.py # 交互式 3D 渲染引擎
@@ -39,9 +39,10 @@ DeepVO/
 
 - **克隆与环境配置**：
 ```bash
-git clone [https://github.com/JackXing875/DeepVO.git](https://github.com/JackXing875/DeepVO.git)
+git clone https://github.com/JackXing875/DeepVO.git
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-
 ```
 
 
