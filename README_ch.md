@@ -48,7 +48,7 @@ pip install -r requirements.txt
 
 - **运行**：
 ```bash
-python main.py
+python3 main.py
 
 ```
 
