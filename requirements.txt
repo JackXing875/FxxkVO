@@ -1,6 +1,9 @@
-torch>=2.0.0
-torchvision>=0.15.0
-opencv-python>=4.8.0
-numpy>=1.24.0
+# ---------------------------------------------------------
+# Python dependencies for DeepVO 3D Visualization Frontend
+# ---------------------------------------------------------
+
+# Core data manipulation and CSV reading
+pandas>=2.0.0
+
+# 3D plotting and real-time animation
 matplotlib>=3.7.0
-PyYAML>=6.0

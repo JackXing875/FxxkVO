@@ -1,67 +1,109 @@
+# FxxkVO: 异步单目视觉里程计
 
-# DeepVO: 深度学习驱动的单目视觉里程计
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![C++14](https://img.shields.io/badge/C++-14%2B-00599C?logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![CMake](https://img.shields.io/badge/CMake-Build-064F8C?logo=cmake&logoColor=white)](https://cmake.org/)
+[![Ubuntu](https://img.shields.io/badge/Platform-Ubuntu%20%7C%20WSL2-E95420?logo=ubuntu&logoColor=white)](https://ubuntu.com/)
+[![OpenCV](https://img.shields.io/badge/Library-OpenCV_4.0%2B-5C3EE8?logo=opencv&logoColor=white)](https://opencv.org/)
+[![Eigen3](https://img.shields.io/badge/Math-Eigen3-8B0000.svg)](https://eigen.tuxfamily.org/)
 
 [English Version](README.md)
 
-DeepVO 是一款单目视觉里程计（VO）系统。它将自监督深度学习的精确性与传统极线几何的严谨性相结合，利用 **SuperPoint** 进行特征追踪，并配合稳健的几何求解器，实现从单路视频流中估算相机 3D 运动轨迹。
+**FxxkVO** 是一个从零开始使用 C++ 构建的轻量级、工业级单目视觉里程计 (VO) 系统。它采用严格解耦的多线程架构，将高速的前端追踪与计算密集的后端非线性优化 (光束法平差 / Bundle Adjustment) 彻底分离。
 
+## 核心特性
 
+* **多线程架构：** 前端和后端运行在完全独立的 `std::thread` 线程环境中，通过严格管理的 `std::mutex` 和 `std::condition_variable` 进行同步，确保视频处理达到零阻塞的极速体验。
+* **鲁棒的前端追踪：** 使用 OpenCV 的 KLT (Kanade-Lucas-Tomasi) 光流法进行快速、可靠的特征点追踪。
+* **工业级后端优化：** 基于 **Ceres Solver** 在滑动窗口上执行局部光束法平差 (Local Bundle Adjustment, LBA)，有效最小化重投影误差，保持轨迹的全局一致性。
+* **动态地图点修剪：** 引入智能深度滤波机制，无情剔除由“短基线”引起的数学伪影和无穷远噪点。
+* **实时 3D 可视化：** 采用完全解耦的 Python 跨进程视图器，结合 Matplotlib 和 Open3D 实现相机轨迹的实时 3D 渲染，并支持自动导出高分辨率的静态 PNG 轨迹图。
+
+---
 
 ## 系统架构
 
-系统采用前后端解耦设计：
-* **前端**：基于 SuperPoint 的关键点提取与描述子生成。
-* **后端**：利用本质矩阵 ($E$) 结合 RANSAC 算法进行位姿恢复。
-* **关键帧逻辑**：基于视差的触发机制，确保几何解算的稳定性并处理单目尺度问题。
+本系统的管线 (Pipeline) 被划分为三个完全解耦的模块：
 
-## 核心特性
-* **深度学习前端**：集成 SuperPoint 模型，在不同光照条件下均能保持稳健的特征追踪。
-* **关键帧管理**：自适应关键帧选择，有效抑制零点漂移，确保宽基线匹配。
-* **伪尺度启发算法**：先进的像素视差映射技术，解决单目相机固有的尺度模糊问题。
-* **交互式 3D 可视化**：实时轨迹渲染，支持鼠标旋转交互及高清结果导出。
+1. **前端 (追踪线程)：** 摄入视频帧，提取关键点，计算光流，并初步估计相机的 $SE(3)$ 变换矩阵。
+2. **后端 (建图线程)：** 当滑动窗口队列填满时被异步唤醒。利用 Ceres 引擎执行 3D 空间点三角化，并同时对相机位姿和地图点进行联合优化。
+3. **可视化 (Python 跨进程)：** 实时读取极速刷盘的 CSV 和 PLY 数据流，渲染 3D 轨迹和环境点云。
 
-## 项目结构
-```text
-DeepVO/
-├── configs/          # 相机内参及系统超参数配置
-├── data/             # 输入视频数据及输出轨迹日志
-├── src/
-│   ├── feature/      # SuperPoint 网络实现 
-│   ├── geometry/     # 极线几何求解与位姿恢复
-│   ├── tracker.py    # VO 状态机与关键帧逻辑
-│   └── visualizer.py # 交互式 3D 渲染引擎
-├── weights/          # 预训练模型权重
-└── main.py           # 程序入口
+---
 
-```
+## 环境依赖 (Dependencies)
 
-## 快速开始
+请确保您的 Linux 系统（强烈推荐 Ubuntu 或 WSL2）已安装以下依赖库：
 
-- **克隆与环境配置**：
+### C++ 核心算法端
+
+* **OpenCV (4.0+)**: 用于图像处理和特征提取。
+* **Eigen3**: 提供高性能的线性代数与矩阵运算支持。
+* **Ceres Solver**: 用于非线性最小二乘优化。
+
+### Python 可视化端
+
 ```bash
-git clone https://github.com/JackXing875/DeepVO.git
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-- **准备数据集**：
+---
 
-请将第一人称视角的 MP4 视频文件放入 data/dataset/ 目录下。
+## 编译与运行 (Build & Run)
+
+### 1. 编译 C++ 引擎
+
+克隆本仓库，并使用 CMake 构建项目：
 
 ```bash
-mkdir -p data/dataset
-cp test_video.mp4 data/dataset/
+mkdir build && cd build
+cmake ..
+make -j4
 ```
 
-- **运行**：
+### 2. 运行系统管线
+
+我们提供了一个统一的 Shell 脚本，用于一键启动 C++ 引擎和 Python 可视化工具：
+
 ```bash
-python3 main.py
+# 请在项目根目录下执行
+./scripts/run.sh <您的视频路径.mp4>
 ```
 
+*(注意：系统运行结束后，会自动将 `trajectory.csv` 和 `sparse_map.ply` 输出至 `data/poses/` 目录，并自动生成一张高分辨率的 3D 轨迹图 PNG)。*
 
+---
 
-## 许可证
+## 项目结构 (Project Structure)
 
-本项目采用 **GNU General Public License v3.0** 开源协议。详情请参阅 [LICENSE](https://www.google.com/search?q=LICENSE) 文件。
+```text
+FxxkVO/
+├── app/
+│   └── main.cpp                  # C++ 引擎主入口
+├── include/deepvo/
+│   ├── tracker.h                 # 前端 KLT 追踪器头文件
+│   ├── backend.h                 # 异步 Ceres 优化器头文件
+│   ├── map.h                     # 全局 3D 点云地图头文件
+│   └── visualizer.h              # 2D OpenCV UI 封装头文件
+├── src/
+│   ├── tracker.cpp
+│   ├── backend.cpp
+│   ├── map.cpp
+│   └── visualizer.cpp
+├── scripts/
+│   ├── run_vo.sh                 # 统一启动脚本
+│   └── view_map.py               # 实时 Matplotlib/Open3D 可视化脚本
+├── data/
+│   └── poses/                    # 自动生成的 CSV, PLY 及 PNG 输出目录
+├── CMakeLists.txt                # CMake 构建配置
+└── README.md
+```
 
+---
+
+## 开源协议 (License)
+
+本项目遵循 **GNU General Public License v3.0** 开源协议。详情请查阅 [LICENSE](https://www.google.com/search?q=LICENSE) 文件。
