@@ -47,3 +47,5 @@ __pycache__/
 data/
 
 .vscode/
+
+.codex

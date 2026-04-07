@@ -1,79 +1,108 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
 #include <vector>
+
 #include <opencv2/opencv.hpp>
+
 #include "deepvo/geometry/epipolar.h"
 
 namespace deepvo {
 namespace tracker {
 
-/**
- * @class VisualOdometryTracker
- * @brief Industrial-grade monocular visual odometry frontend utilizing KLT optical flow.
- * * This class maintains the state of the tracked features, accumulates the global 
- * camera ego-motion, and autonomously manages feature detection and re-initialization.
- */
 class VisualOdometryTracker {
-public:
-    /**
-     * @brief Constructor initializes the tracker with camera intrinsics.
-     * @param K Camera intrinsic matrix (3x3).
-     */
+ public:
     explicit VisualOdometryTracker(const cv::Mat& K);
 
-    /**
-     * @brief Processes the next video frame to estimate relative camera motion.
-     * @param frame The current RGB or grayscale image frame.
-     * @return True if tracking is successful and pose is updated; false otherwise.
-     */
     bool ProcessFrame(const cv::Mat& frame);
 
-    /**
-     * @brief Retrieves the accumulated global rotation matrix.
-     * @return 3x3 double-precision rotation matrix (CV_64F).
-     */
     cv::Mat GetCurrentR() const;
-
-    /**
-     * @brief Retrieves the accumulated global translation vector.
-     * @return 3x1 double-precision translation vector (CV_64F).
-     */
     cv::Mat GetCurrentT() const;
-
-    /**
-     * @brief Retrieves the successfully tracked keypoints in the current frame.
-     * @return Vector of 2D sub-pixel coordinates.
-     */
+    cv::Mat GetCurrentPosition() const;
     std::vector<cv::Point2f> GetTrackedPoints() const;
+    std::string GetStatusText() const;
+    bool HasActivePose() const;
+    int GetVisibleTrackCount() const;
+    int GetLandmarkCount() const;
 
-private:
-    // Tracking hyperparameters (Industrial Defaults)
-    static constexpr int kMinFeatures = 150;
-    static constexpr int kMaxFeatures = 1000;
-    static constexpr double kMinFeatureDistance = 10.0;
-    static constexpr double kPixelMovementThreshold = 2.0;
+ private:
+    enum class Stage {
+        kBootstrap,
+        kTracking,
+    };
 
-    // Core geometric solver
+    struct Landmark {
+        cv::Point3f position_w;
+        int observations = 0;
+    };
+
+    static constexpr int kBootstrapMinFeatures = 300;
+    static constexpr int kTrackingMinFeatures = 80;
+    static constexpr int kTargetActiveTracks = 320;
+    static constexpr int kMaxFeatureCount = 1200;
+    static constexpr int kMinLandmarksForTracking = 20;
+    static constexpr int kPnPMinInliers = 25;
+    static constexpr double kMinFeatureDistance = 12.0;
+    static constexpr double kBootstrapMinParallaxPixels = 18.0;
+    static constexpr double kMinTriangulationParallaxDeg = 1.5;
+    static constexpr double kMaxReprojectionErrorPx = 3.0;
+    static constexpr double kPnPMaxReprojectionErrorPx = 3.0;
+
     geometry::EpipolarGeometry geo_solver_;
+    Stage stage_;
 
-    // Internal state variables
-    bool is_initialized_;
     cv::Mat K_;
+    cv::Mat current_R_;
+    cv::Mat current_t_;
+    cv::Mat prev_pose_R_;
+    cv::Mat prev_pose_t_;
+
     cv::Mat prev_frame_gray_;
     std::vector<cv::Point2f> prev_kpts_;
+    std::vector<int> prev_landmark_ids_;
 
-    // Global pose accumulation (Absolute coordinates)
-    cv::Mat cur_R_;
-    cv::Mat cur_t_;
-    double current_scale_;
-    double prev_avg_dist_;
+    cv::Mat bootstrap_frame_gray_;
+    std::vector<cv::Point2f> bootstrap_kpts_;
 
-    /**
-     * @brief Extracts high-quality Shi-Tomasi corners to replenish the feature pool.
-     * @param frame_gray The single-channel grayscale image.
-     * @param kpts The vector to populate with newly detected points.
-     */
-    void DetectNewFeatures(const cv::Mat& frame_gray, std::vector<cv::Point2f>& kpts);
+    std::unordered_map<int, Landmark> landmarks_;
+    int next_landmark_id_;
+    std::string status_text_;
+
+    void ResetToBootstrap();
+    void StartBootstrap(const cv::Mat& frame_gray);
+    bool TryBootstrap(const cv::Mat& frame_gray);
+    bool TrackFrame(const cv::Mat& frame_gray);
+
+    void DetectNewFeatures(const cv::Mat& frame_gray,
+                           const std::vector<cv::Point2f>& occupied_points,
+                           std::vector<cv::Point2f>& kpts,
+                           int max_corners) const;
+
+    bool TrackPoints(const cv::Mat& prev_gray, const cv::Mat& cur_gray,
+                     const std::vector<cv::Point2f>& prev_pts,
+                     std::vector<cv::Point2f>& cur_pts,
+                     std::vector<uchar>& valid_status) const;
+
+    int AppendTriangulatedLandmarks(const std::vector<cv::Point2f>& pts1,
+                                    const std::vector<cv::Point2f>& pts2,
+                                    const cv::Mat& R1, const cv::Mat& t1,
+                                    const cv::Mat& R2, const cv::Mat& t2,
+                                    std::vector<cv::Point2f>& accepted_cur_points,
+                                    std::vector<int>& accepted_landmark_ids);
+
+    void AddLandmarksFromMotion(const cv::Mat& prev_gray, const cv::Mat& cur_gray,
+                                const cv::Mat& prev_R, const cv::Mat& prev_t,
+                                const cv::Mat& cur_R, const cv::Mat& cur_t,
+                                const std::vector<cv::Point2f>& occupied_prev,
+                                std::vector<cv::Point2f>& cur_points,
+                                std::vector<int>& cur_ids);
+
+    cv::Mat ComposeProjectionMatrix(const cv::Mat& R, const cv::Mat& t) const;
+    cv::Mat CameraPositionFromPose(const cv::Mat& R, const cv::Mat& t) const;
+
+    static bool IsInsideImage(const cv::Point2f& pt, const cv::Size& size, int border = 8);
+    static double ComputeMedian(std::vector<double> values);
 };
 
 }  // namespace tracker
