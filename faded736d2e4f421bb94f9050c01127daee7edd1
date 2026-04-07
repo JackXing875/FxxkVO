@@ -1,0 +1,751 @@
+app/main.cpp
+  7a08f1e297c802d3 6,8,17,19-24,27-34,36,39,41,43,47-48,62-65,67-69,75,85-100,108
+include/deepvo/tracker.h
+  7a08f1e297c802d3 3-4,6,8,15,22,24-27,29-50,53,56-60,63-102,104-105,109
+scripts/run.sh
+  7a08f1e297c802d3 3,12-23,25-26,28,34,41,44,47,49
+src/tracker.cpp
+  7a08f1e297c802d3 2,4,6-7,13-21,25-29,37-57,59-60,62-64,66-120,122,124-130,134-141,143-145,147-150,153-165,167-168,171-275,278-330,333-344,347-379,381-386,388-392,396-586,589-607,611
+src/visualizer.cpp
+  7a08f1e297c802d3 2,8,17-20,25-29,33-34,46-47
+include/deepvo/visualizer.h
+  7a08f1e297c802d3 4,6,16-19,25-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "faded736d2e4f421bb94f9050c01127daee7edd1",
+  "prompts": {
+    "7a08f1e297c802d3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019d66d9-6d1a-7da0-a9c5-e0144a2f97ce",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Schrieffer",
+      "messages": [
+        {
+          "type": "user",
+          "text": "<environment_context>\n  <cwd>/home/schrieffer/FxxkVO</cwd>\n  <shell>bash</shell>\n  <current_date>2026-04-07</current_date>\n  <timezone>Asia/Shanghai</timezone>\n</environment_context>",
+          "timestamp": "2026-04-07T07:31:29.712Z"
+        },
+        {
+          "type": "user",
+          "text": "这个项目是一个vo视觉里程计  请你先阅读这个项目了解一下",
+          "timestamp": "2026-04-07T07:31:29.713Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我会先按代码阅读的方式梳理项目结构、入口、核心模块和数据流。会用 `ask` skill 辅助做代码库探索，先看仓库顶层文件、构建配置和主干源码。",
+          "timestamp": "2026-04-07T07:31:38.458Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "pwd && rg --files -g 'SKILL.md' /home/schrieffer/.git-ai/skills/ask /home/schrieffer/FxxkVO",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:31:38.461Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "rg --files /home/schrieffer/FxxkVO | sed 's#^/home/schrieffer/FxxkVO/##' | head -n 200",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:31:38.462Z"
+        },
+        {
+          "type": "assistant",
+          "text": "仓库很小，主干比较集中：`app/main.cpp`、`src/tracker.cpp`、`src/backend.cpp`、`src/visualizer.cpp` 和极线几何模块。先读 README、构建文件和这些核心源文件，确认程序入口、线程模型和 VO 管线。",
+          "timestamp": "2026-04-07T07:31:48.614Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' /home/schrieffer/.git-ai/skills/ask/SKILL.md",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:31:48.626Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' README_ch.md",
+            "max_output_tokens": 5000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:31:48.639Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,240p' CMakeLists.txt",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:31:48.646Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' app/main.cpp",
+            "max_output_tokens": 5000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:31:48.647Z"
+        },
+        {
+          "type": "assistant",
+          "text": "README 里写的是“异步前后端 + Ceres BA”，但 `CMakeLists.txt` 目前只编进了 `tracker / visualizer / epipolar`，`backend.cpp` 没有链接进可执行程序。接下来我会核对头文件和实现，确认文档和实际代码是否一致。",
+          "timestamp": "2026-04-07T07:32:05.357Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' include/deepvo/tracker.h",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:05.358Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' include/deepvo/backend.h",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:05.364Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,240p' include/deepvo/visualizer.h",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:05.364Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' include/deepvo/geometry/epipolar.h",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:05.364Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,320p' src/tracker.cpp",
+            "max_output_tokens": 6000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:18.042Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,280p' src/geometry/epipolar.cpp",
+            "max_output_tokens": 5000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:18.061Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' src/visualizer.cpp",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:18.069Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,320p' src/backend.cpp",
+            "max_output_tokens": 6000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:18.071Z"
+        },
+        {
+          "type": "assistant",
+          "text": "目前可以确认：真正实现的是单线程前端 VO + OpenCV 2D 显示；`backend.cpp` 更像预留骨架，还没有接入。再读启动脚本和 Python 可视化，补上“运行方式”和“输出链路”的理解。",
+          "timestamp": "2026-04-07T07:32:35.723Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' scripts/run.sh",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:35.753Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,320p' scripts/viewer_3d.py",
+            "max_output_tokens": 6000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:35.753Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' requirements.txt",
+            "max_output_tokens": 2000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:35.756Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,240p' README.md",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:35.756Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我再补一层“代码来源上下文”：查一下 `git-ai` 记录，看关键文件背后的设计意图，避免只凭静态阅读下结论。然后我会把实际现状和 README 里的差异一起总结给你。",
+          "timestamp": "2026-04-07T07:32:51.978Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git-ai search --file app/main.cpp --verbose",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:51.979Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git-ai search --file src/tracker.cpp --verbose",
+            "max_output_tokens": 6000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:52.135Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git status --short",
+            "max_output_tokens": 2000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:32:52.135Z"
+        },
+        {
+          "type": "assistant",
+          "text": "`git-ai` 上下文现在拿不到，后台锁文件卡住了，所以这一层我先不依赖。接下来只基于仓库现状做一次精确梳理，并补上关键代码位置和我确认到的结论。",
+          "timestamp": "2026-04-07T07:33:08.669Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba app/main.cpp | sed -n '1,220p'",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:08.674Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba src/tracker.cpp | sed -n '1,260p'",
+            "max_output_tokens": 6000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:08.675Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba src/geometry/epipolar.cpp | sed -n '1,220p'",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:08.700Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba src/backend.cpp | sed -n '1,260p'",
+            "max_output_tokens": 5000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:08.703Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba scripts/run.sh | sed -n '1,220p'",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:08.704Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba scripts/viewer_3d.py | sed -n '1,260p'",
+            "max_output_tokens": 5000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:08.704Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "nl -ba CMakeLists.txt | sed -n '1,220p'",
+            "max_output_tokens": 2500,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:08.712Z"
+        },
+        {
+          "type": "assistant",
+          "text": "核心阅读已经够了。我再确认两个容易踩坑的运行细节：仓库里是否真的有 README 提到的数据目录，以及启动脚本和主程序的参数接口是否对得上。",
+          "timestamp": "2026-04-07T07:33:15.741Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "find data -maxdepth 3 -type f | sort",
+            "max_output_tokens": 2000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:15.799Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "ls -la",
+            "max_output_tokens": 2000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:33:15.814Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我已经把这个项目的主干读完了。基于当前仓库内容，它更准确地说是一个“单目 VO 前端原型 + Python 轨迹可视化”，还不是 README 描述里的完整异步前后端系统。\n\n**当前实际架构**\n\n程序入口在 [app/main.cpp](/home/schrieffer/FxxkVO/app/main.cpp#L17)。主循环做的事情很直接：读视频帧，调用 `tracker.ProcessFrame(frame)`，把当前平移 `t` 追加写进 CSV，然后用 OpenCV 画 2D 跟踪结果并显示。相机内参也是硬编码在这里的，`fx=fy=1000, cx=640, cy=360`，见 [app/main.cpp](/home/schrieffer/FxxkVO/app/main.cpp#L29)。\n\nVO 核心在 [src/tracker.cpp](/home/schrieffer/FxxkVO/src/tracker.cpp#L32)。它的流程是：\n- 首帧用 Shi-Tomasi 检点初始化，见 [src/tracker.cpp](/home/schrieffer/FxxkVO/src/tracker.cpp#L43)。\n- 后续帧用 KLT 光流跟踪，见 [src/tracker.cpp](/home/schrieffer/FxxkVO/src/tracker.cpp#L58)。\n- 统计平均像素位移 `avg_dist`，只有位移大于阈值才估计位姿，见 [src/tracker.cpp](/home/schrieffer/FxxkVO/src/tracker.cpp#L96)。\n- 位姿估计调用极线几何模块，用 `findEssentialMat + recoverPose`，见 [src/geometry/epipolar.cpp](/home/schrieffer/FxxkVO/src/geometry/epipolar.cpp#L19)。\n- 平移尺度不是来自真实深度或三角化，而是一个启发式假尺度 `fake_scale = avg_dist / 20.0`，见 [src/tracker.cpp](/home/schrieffer/FxxkVO/src/tracker.cpp#L104)。\n- 最后把 `cur_R_` 和 `cur_t_` 累积成全局轨迹，见 [src/tracker.cpp](/home/schrieffer/FxxkVO/src/tracker.cpp#L113)。\n\n可视化分两层：\n- OpenCV 2D 叠点显示在 [src/visualizer.cpp](/home/schrieffer/FxxkVO/src/visualizer.cpp#L15)。\n- Python 3D 轨迹图在 [scripts/viewer_3d.py](/home/schrieffer/FxxkVO/scripts/viewer_3d.py#L18)，它只是实时读 CSV，用 `matplotlib` 画 3D 折线，并在退出时导出 PNG。\n\n**README 和代码的差异**\n\n仓库文档把它描述成“异步前端 + 后端 BA + Python 进程可视化”，但当前代码里：\n- `backend` 只是骨架，`Optimize()` 里还是 TODO，没有 BA，见 [src/backend.cpp](/home/schrieffer/FxxkVO/src/backend.cpp#L51)。\n- `backend.cpp` 根本没被编译进目标，见 [CMakeLists.txt](/home/schrieffer/FxxkVO/CMakeLists.txt#L19)。\n- `CMakeLists.txt` 也没有找 `Ceres`，只依赖 `OpenCV/Eigen/OpenMP`，见 [CMakeLists.txt](/home/schrieffer/FxxkVO/CMakeLists.txt#L10)。\n- README 提到的 `Open3D`、`PLY`、`map.cpp`、多线程同步，在当前仓库里都不存在。\n- 启动脚本 [scripts/run.sh](/home/schrieffer/FxxkVO/scripts/run.sh#L8) 也没有使用 README 里说的“传入视频路径参数”，而是把视频路径写死成 `./data/dataset/test_video.mp4`。\n- 仓库当前连 `data/` 目录都没有，脚本是假定运行时再创建 `data/poses`，但数据集文件本身并不在仓库里。\n\n所以如果一句话概括：这个项目现在实现的是“基于 KLT + 本质矩阵的单目前端里程计”，平移尺度靠启发式近似，后端优化和真正异步架构还没有落地。\n\n额外说明一下，我还尝试用 `git-ai` 查设计上下文，但本地服务被锁文件卡住了，没拿到历史提示词信息。下一步如果你愿意，我可以继续帮你做两件事之一：一是把这个项目按“真实现状”画成模块/数据流图；二是进一步审代码，指出目前 VO 精度和鲁棒性的关键问题。",
+          "timestamp": "2026-04-07T07:33:59.021Z"
+        },
+        {
+          "type": "user",
+          "text": "目前的代码可以说是烂完了 没有完成readme里说的（其实我甚至还想更进一步） 就在现在的基础上 位姿啥的简直是一塌糊涂 我希望你做一次大手术 随便你怎么改 我只要最优的性能与表现",
+          "timestamp": "2026-04-07T07:35:36.556Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我会按“重做核心 VO 管线”的标准处理，不在现有逻辑上小修小补。先确认当前代码能不能编、依赖边界在哪里，然后我会把前端从“本质矩阵+假尺度累计”改成更像样的单目稀疏 VO。",
+          "timestamp": "2026-04-07T07:35:57.325Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "cmake -S . -B build",
+            "max_output_tokens": 4000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:35:57.337Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git ls-files",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:35:57.338Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我在等构建配置结果，同时开始收紧改造范围。目标会落在三件事上：更可靠的初始化、从 2D-2D 切到 3D-2D 位姿估计、把伪尺度逻辑彻底删掉。",
+          "timestamp": "2026-04-07T07:36:05.890Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "write_stdin",
+          "input": {
+            "max_output_tokens": 4000,
+            "session_id": 39298,
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:36:06.089Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "update_plan",
+          "input": {
+            "explanation": "现有实现的问题集中在错误的尺度处理、每帧2D-2D累计位姿、固定内参和无地图约束。我会把核心管线重构成：双帧初始化三角化稀疏地图，后续帧用3D-2D PnP跟踪，并补上关键的输入和运行接口。",
+            "plan": [
+              {
+                "status": "in_progress",
+                "step": "重构 tracker 头文件和状态机，定义地图点、bootstrap、PnP 跟踪与重建所需数据结构"
+              },
+              {
+                "status": "pending",
+                "step": "重写 tracker.cpp 的 VO 主流程：初始化、LK 跟踪、RANSAC/PnP、三角化增量建图、丢失恢复"
+              },
+              {
+                "status": "pending",
+                "step": "改 main/run 接口，支持更合理的内参初始化和参数传递，并增强可视化状态输出"
+              },
+              {
+                "status": "pending",
+                "step": "编译验证并做一次静态检查，确认项目至少能稳定构建"
+              }
+            ]
+          },
+          "timestamp": "2026-04-07T07:36:56.379Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我要开始改核心文件了，修改会比较大：`tracker` 会整块重写，`main` 和 `visualizer` 会跟着调整接口，`run.sh` 会修成真正可传参的启动脚本。改完我会立即编译验证。",
+          "timestamp": "2026-04-07T07:39:04.241Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /home/schrieffer/FxxkVO/include/deepvo/tracker.h\n@@\n #pragma once\n \n+#include <string>\n+#include <unordered_map>\n #include <vector>\n+\n #include <opencv2/opencv.hpp>\n+\n #include \"deepvo/geometry/epipolar.h\"\n \n namespace deepvo {\n namespace tracker {\n \n-/**\n- * @class VisualOdometryTracker\n- * @brief Industrial-grade monocular visual odometry frontend utilizing KLT optical flow.\n- * * This class maintains the state of the tracked features, accumulates the global \n- * camera ego-motion, and autonomously manages feature detection and re-initialization.\n- */\n class VisualOdometryTracker {\n public:\n-    /**\n-     * @brief Constructor initializes the tracker with camera intrinsics.\n-     * @param K Camera intrinsic matrix (3x3).\n-     */\n     explicit VisualOdometryTracker(const cv::Mat& K);\n-\n-    /**\n-     * @brief Processes the next video frame to estimate relative camera motion.\n-     * @param frame The current RGB or grayscale image frame.\n-     * @return True if tracking is successful and pose is updated; false otherwise.\n-     */\n     bool ProcessFrame(const cv::Mat& frame);\n-\n-    /**\n-     * @brief Retrieves the accumulated global rotation matrix.\n-     * @return 3x3 double-precision rotation matrix (CV_64F).\n-     */\n     cv::Mat GetCurrentR() const;\n-\n-    /**\n-     * @brief Retrieves the accumulated global translation vector.\n-     * @return 3x1 double-precision translation vector (CV_64F).\n-     */\n     cv::Mat GetCurrentT() const;\n-\n-    /**\n-     * @brief Retrieves the successfully tracked keypoints in the current frame.\n-     * @return Vector of 2D sub-pixel coordinates.\n-     */\n+    cv::Mat GetCurrentPosition() const;\n     std::vector<cv::Point2f> GetTrackedPoints() const;\n+    std::string GetStatusText() const;\n+    int GetVisibleTrackCount() const;\n+    int GetLandmarkCount() const;\n \n private:\n-    // Tracking hyperparameters (Industrial Defaults)\n-    static constexpr int kMinFeatures = 150;\n-    static constexpr int kMaxFeatures = 1000;\n-    static constexpr double kMinFeatureDistance = 10.0;\n-    static constexpr double kPixelMovementThreshold = 2.0;\n+    enum class Stage {\n+        kBootstrap,\n+        kTracking,\n+    };\n+\n+    struct Landmark {\n+        cv::Point3f position_w;\n+        int observations = 0;\n+    };\n+\n+    static constexpr int kBootstrapMinFeatures = 300;\n+    static constexpr int kTrackingMinFeatures = 80;\n+    static constexpr int kTargetActiveTracks = 320;\n+    static constexpr int kMaxFeatureCount = 1200;\n+    static constexpr int kMinLandmarksForTracking = 20;\n+    static constexpr int kPnPMinInliers = 25;\n+    static constexpr double kMinFeatureDistance = 12.0;\n+    static constexpr double kBootstrapMinParallaxPixels = 18.0;\n+    static constexpr double kMinTriangulationParallaxDeg = 1.5;\n+    static constexpr double kMaxReprojectionErrorPx = 3.0;\n+    static constexpr double kPnPMaxReprojectionErrorPx = 3.0;\n \n-    // Core geometric solver\n     geometry::EpipolarGeometry geo_solver_;\n+    Stage stage_;\n \n-    // Internal state variables\n-    bool is_initialized_;\n     cv::Mat K_;\n-    cv::Mat prev_frame_gray_;\n-    std::vector<cv::Point2f> prev_kpts_;\n-\n-    // Global pose accumulation (Absolute coordinates)\n-    cv::Mat cur_R_;\n-    cv::Mat cur_t_;\n-    double current_scale_;\n-    double prev_avg_dist_;\n-\n-    /**\n-     * @brief Extracts high-quality Shi-Tomasi corners to replenish the feature pool.\n-     * @param frame_gray The single-channel grayscale image.\n-     * @param kpts The vector to populate with newly detected points.\n-     */\n-    void DetectNewFeatures(const cv::Mat& frame_gray, std::vector<cv::Point2f>& kpts);\n+    cv::Mat current_R_;\n+    cv::Mat current_t_;\n+    cv::Mat prev_pose_R_;\n+    cv::Mat prev_pose_t_;\n+\n+    cv::Mat prev_frame_gray_;\n+    std::vector<cv::Point2f> prev_kpts_;\n+    std::vector<int> prev_landmark_ids_;\n+\n+    cv::Mat bootstrap_frame_gray_;\n+    std::vector<cv::Point2f> bootstrap_kpts_;\n+\n+    std::unordered_map<int, Landmark> landmarks_;\n+    int next_landmark_id_;\n+    std::string status_text_;\n+\n+    void ResetToBootstrap();\n+    void StartBootstrap(const cv::Mat& frame_gray);\n+    bool TryBootstrap(const cv::Mat& frame_gray);\n+    bool TrackFrame(const cv::Mat& frame_gray);\n+\n+    void DetectNewFeatures(const cv::Mat& frame_gray,\n+                           const std::vector<cv::Point2f>& occupied_points,\n+                           std::vector<cv::Point2f>& kpts,\n+                           int max_corners) const;\n+\n+    bool TrackPoints(const cv::Mat& prev_gray, const cv::Mat& cur_gray,\n+                     const std::vector<cv::Point2f>& prev_pts,\n+                     std::vector<cv::Point2f>& cur_pts,\n+                     std::vector<uchar>& valid_status) const;\n+\n+    int AppendTriangulatedLandmarks(const std::vector<cv::Point2f>& pts1,\n+                                    const std::vector<cv::Point2f>& pts2,\n+                                    const cv::Mat& R1, const cv::Mat& t1,\n+                                    const cv::Mat& R2, const cv::Mat& t2,\n+                                    std::vector<cv::Point2f>& accepted_cur_points,\n+                                    std::vector<int>& accepted_landmark_ids);\n+\n+    void AddLandmarksFromMotion(const cv::Mat& prev_gray, const cv::Mat& cur_gray,\n+                                const cv::Mat& prev_R, const cv::Mat& prev_t,\n+                                const cv::Mat& cur_R, const cv::Mat& cur_t,\n+                                const std::vector<cv::Point2f>& occupied_prev,\n+                                std::vector<cv::Point2f>& cur_points,\n+                                std::vector<int>& cur_ids);\n+\n+    cv::Mat ComposeProjectionMatrix(const cv::Mat& R, const cv::Mat& t) const;\n+    cv::Mat CameraPositionFromPose(const cv::Mat& R, const cv::Mat& t) const;\n+\n+    static bool IsInsideImage(const cv::Point2f& pt, const cv::Size& size, int border = 8);\n+    static double ComputeMedian(std::vector<double> values);\n };\n \n }  // namespace tracker\n }  // namespace deepvo\n*** Update File: /home/schrieffer/FxxkVO/src/tracker.cpp\n@@\n #include \"deepvo/tracker.h\"\n-#include <numeric>\n-#include <algorithm>\n+\n+#include <algorithm>\n+#include <cmath>\n #include <iostream>\n+#include <limits>\n+#include <sstream>\n \n namespace deepvo {\n namespace tracker {\n \n VisualOdometryTracker::VisualOdometryTracker(const cv::Mat& K)\n-    : geo_solver_(K), is_initialized_(false), K_(K.clone()), \n-      current_scale_(1.0), prev_avg_dist_(-1.0) {\n-    \n-    // Initialize global pose at the origin facing forward\n-    cur_R_ = cv::Mat::eye(3, 3, CV_64F);\n-    cur_t_ = cv::Mat::zeros(3, 1, CV_64F);\n+    : geo_solver_(K),\n+      stage_(Stage::kBootstrap),\n+      K_(K.clone()),\n+      next_landmark_id_(0),\n+      status_text_(\"bootstrap: waiting for parallax\") {\n+    current_R_ = cv::Mat::eye(3, 3, CV_64F);\n+    current_t_ = cv::Mat::zeros(3, 1, CV_64F);\n+    prev_pose_R_ = current_R_.clone();\n+    prev_pose_t_ = current_t_.clone();\n }\n \n-void VisualOdometryTracker::DetectNewFeatures(const cv::Mat& frame_gray, std::vector<cv::Point2f>& kpts) {\n-    // Utilize Shi-Tomasi corner detection, which provides excellent stability for optical flow\n+bool VisualOdometryTracker::ProcessFrame(const cv::Mat& frame) {\n+    if (frame.empty()) {\n+        status_text_ = \"input error: empty frame\";\n+        return false;\n+    }\n+\n+    cv::Mat frame_gray;\n+    if (frame.channels() == 3) {\n+        cv::cvtColor(frame, frame_gray, cv::COLOR_BGR2GRAY);\n+    } else {\n+        frame_gray = frame.clone();\n+    }\n+\n+    if (stage_ == Stage::kBootstrap) {\n+        return TryBootstrap(frame_gray);\n+    }\n+    return TrackFrame(frame_gray);\n+}\n+\n+cv::Mat VisualOdometryTracker::GetCurrentR() const {\n+    return current_R_.clone();\n+}\n+\n+cv::Mat VisualOdometryTracker::GetCurrentT() const {\n+    return current_t_.clone();\n+}\n+\n+cv::Mat VisualOdometryTracker::GetCurrentPosition() const {\n+    return CameraPositionFromPose(current_R_, current_t_);\n+}\n+\n+std::vector<cv::Point2f> VisualOdometryTracker::GetTrackedPoints() const {\n+    if (stage_ == Stage::kTracking) {\n+        return prev_kpts_;\n+    }\n+    return bootstrap_kpts_;\n+}\n+\n+std::string VisualOdometryTracker::GetStatusText() const {\n+    return status_text_;\n+}\n+\n+int VisualOdometryTracker::GetVisibleTrackCount() const {\n+    return static_cast<int>(GetTrackedPoints().size());\n+}\n+\n+int VisualOdometryTracker::GetLandmarkCount() const {\n+    return static_cast<int>(landmarks_.size());\n+}\n+\n+void VisualOdometryTracker::ResetToBootstrap() {\n+    stage_ = Stage::kBootstrap;\n+    current_R_ = cv::Mat::eye(3, 3, CV_64F);\n+    current_t_ = cv::Mat::zeros(3, 1, CV_64F);\n+    prev_pose_R_ = current_R_.clone();\n+    prev_pose_t_ = current_t_.clone();\n+    prev_frame_gray_.release();\n+    prev_kpts_.clear();\n+    prev_landmark_ids_.clear();\n+    bootstrap_frame_gray_.release();\n+    bootstrap_kpts_.clear();\n+    landmarks_.clear();\n+    next_landmark_id_ = 0;\n+}\n+\n+void VisualOdometryTracker::StartBootstrap(const cv::Mat& frame_gray) {\n+    bootstrap_frame_gray_ = frame_gray.clone();\n+    DetectNewFeatures(frame_gray, {}, bootstrap_kpts_, kMaxFeatureCount);\n+\n+    std::ostringstream oss;\n+    oss << \"bootstrap: seeded \" << bootstrap_kpts_.size() << \" features\";\n+    status_text_ = oss.str();\n+}\n+\n+void VisualOdometryTracker::DetectNewFeatures(const cv::Mat& frame_gray,\n+                                              const std::vector<cv::Point2f>& occupied_points,\n+                                              std::vector<cv::Point2f>& kpts,\n+                                              int max_corners) const {\n+    cv::Mat mask(frame_gray.size(), CV_8UC1, cv::Scalar(255));\n+    for (const auto& pt : occupied_points) {\n+        cv::circle(mask, pt, static_cast<int>(kMinFeatureDistance), cv::Scalar(0), cv::FILLED);\n+    }\n+\n     cv::goodFeaturesToTrack(\n-        frame_gray, kpts, \n-        kMaxFeatures, \n-        0.01,                 // Quality level\n-        kMinFeatureDistance,  // Enforce uniform spatial distribution\n-        cv::Mat(), \n-        3,                    // Block size\n-        false, \n-        0.04\n+        frame_gray, kpts,\n+        max_corners,\n+        0.01,\n+        kMinFeatureDistance,\n+        mask,\n+        3,\n+        false,\n+        0.04\n     );\n }\n \n-bool VisualOdometryTracker::ProcessFrame(const cv::Mat& frame) {\n-    cv::Mat frame_gray;\n-    if (frame.channels() == 3) {\n-        cv::cvtColor(frame, frame_gray, cv::COLOR_BGR2GRAY);\n-    } else {\n-        frame_gray = frame.clone();\n+bool VisualOdometryTracker::TrackPoints(const cv::Mat& prev_gray, const cv::Mat& cur_gray,\n+                                        const std::vector<cv::Point2f>& prev_pts,\n+                                        std::vector<cv::Point2f>& cur_pts,\n+                                        std::vector<uchar>& valid_status) const {\n+    cur_pts.clear();\n+    valid_status.clear();\n+    if (prev_pts.empty()) {\n+        return false;\n     }\n \n-    // ---------------------------------------------------------\n-    // Phase 1: System Initialization\n-    // ---------------------------------------------------------\n-    if (!is_initialized_) {\n-        DetectNewFeatures(frame_gray, prev_kpts_);\n-        prev_frame_gray_ = frame_gray;\n-        is_initialized_ = true;\n-        std::cout << \"[Tracker] System initialized with \" << prev_kpts_.size() << \" features.\" << std::endl;\n-        return true;\n+    std::vector<uchar> forward_status;\n+    std::vector<float> forward_error;\n+    cv::calcOpticalFlowPyrLK(\n+        prev_gray, cur_gray, prev_pts, cur_pts,\n+        forward_status, forward_error,\n+        cv::Size(21, 21), 3,\n+        cv::TermCriteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 30, 0.01)\n+    );\n+\n+    std::vector<cv::Point2f> backtracked_pts;\n+    std::vector<uchar> backward_status;\n+    std::vector<float> backward_error;\n+    cv::calcOpticalFlowPyrLK(\n+        cur_gray, prev_gray, cur_pts, backtracked_pts,\n+        backward_status, backward_error,\n+        cv::Size(21, 21), 3,\n+        cv::TermCriteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 30, 0.01)\n+    );\n+\n+    valid_status.assign(prev_pts.size(), 0);\n+    const cv::Size image_size = cur_gray.size();\n+    for (size_t i = 0; i < prev_pts.size(); ++i) {\n+        if (!forward_status[i] || !backward_status[i]) {\n+            continue;\n+        }\n+\n+        if (!IsInsideImage(cur_pts[i], image_size)) {\n+            continue;\n+        }\n+\n+        const double fb_error = cv::norm(prev_pts[i] - backtracked_pts[i]);\n+        if (fb_error > 1.5) {\n+            continue;\n+        }\n+\n+        valid_status[i] = 1;\n     }\n \n-    // ---------------------------------------------------------\n-    // Phase 2: KLT Optical Flow Tracking\n-    // ---------------------------------------------------------\n-    std::vector<cv::Point2f> cur_kpts;\n-    std::vector<uchar> status;\n-    std::vector<float> err;\n-\n-    // Calculate sparse optical flow utilizing image pyramids\n-    cv::calcOpticalFlowPyrLK(\n-        prev_frame_gray_, frame_gray, \n-        prev_kpts_, cur_kpts, \n-        status, err, \n-        cv::Size(21, 21), \n-        3 // Max pyramid level\n-    );\n-\n-    // Filter out points that the KLT algorithm failed to track\n-    std::vector<cv::Point2f> matched_prev, matched_cur;\n-    double total_dist = 0.0;\n-    \n-    for (size_t i = 0; i < status.size(); i++) {\n-        if (status[i]) {\n-            matched_prev.push_back(prev_kpts_[i]);\n-            matched_cur.push_back(cur_kpts[i]);\n-            \n-            // Accumulate pixel displacement to estimate relative physical scale later\n-            total_dist += cv::norm(cur_kpts[i] - prev_kpts_[i]);\n+    return true;\n+}\n+\n+bool VisualOdometryTracker::TryBootstrap(const cv::Mat& frame_gray) {\n+    if (bootstrap_frame_gray_.empty()) {\n+        StartBootstrap(frame_gray);\n+        return true;\n+    }\n+\n+    std::vector<cv::Point2f> tracked_kpts;\n+    std::vector<uchar> valid_status;\n+    TrackPoints(bootstrap_frame_gray_, frame_gray, bootstrap_kpts_, tracked_kpts, valid_status);\n+\n+    std::vector<cv::Point2f> matched_prev;\n+    std::vector<cv::Point2f> matched_cur;\n+    std::vector<double> disparities;\n+    matched_prev.reserve(bootstrap_kpts_.size());\n+    matched_cur.reserve(bootstrap_kpts_.size());\n+\n+    for (size_t i = 0; i < bootstrap_kpts_.size(); ++i) {\n+        if (!valid_status.empty() && !valid_status[i]) {\n+            continue;\n         }\n+        matched_prev.push_back(bootstrap_kpts_[i]);\n+        matched_cur.push_back(tracked_kpts[i]);\n+        disparities.push_back(cv::norm(tracked_kpts[i] - bootstrap_kpts_[i]));\n     }\n \n-    if (matched_cur.empty()) {\n-        std::cerr << \"[Tracker] Fatal: Complete loss of tracking.\" << std::endl;\n-        is_initialized_ = false;\n-        return false;\n+    if (matched_cur.size() < static_cast<size_t>(kMinLandmarksForTracking)) {\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: refresh after track loss\";\n+        return true;\n     }\n \n-    double avg_dist = total_dist / matched_cur.size();\n+    const double median_parallax = ComputeMedian(std::move(disparities));\n+    if (median_parallax < kBootstrapMinParallaxPixels) {\n+        std::ostringstream oss;\n+        oss << \"bootstrap: waiting for motion (\" << matched_cur.size() << \" tracks)\";\n+        status_text_ = oss.str();\n+        return true;\n+    }\n+\n+    cv::Mat R, t, inlier_mask;\n+    std::tie(R, t, inlier_mask) = geo_solver_.EstimatePose(matched_prev, matched_cur);\n+    if (R.empty() || t.empty() || cv::countNonZero(inlier_mask) < kPnPMinInliers) {\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: pose init failed, reseeded\";\n+        return true;\n+    }\n+\n+    R.convertTo(current_R_, CV_64F);\n+    t.convertTo(current_t_, CV_64F);\n+\n+    std::vector<cv::Point2f> inlier_prev;\n+    std::vector<cv::Point2f> inlier_cur;\n+    inlier_prev.reserve(matched_prev.size());\n+    inlier_cur.reserve(matched_cur.size());\n+    for (int i = 0; i < inlier_mask.rows; ++i) {\n+        if (inlier_mask.at<uchar>(i)) {\n+            inlier_prev.push_back(matched_prev[i]);\n+            inlier_cur.push_back(matched_cur[i]);\n+        }\n+    }\n+\n+    std::vector<cv::Point2f> current_points;\n+    std::vector<int> current_ids;\n+    const cv::Mat identity_R = cv::Mat::eye(3, 3, CV_64F);\n+    const cv::Mat zero_t = cv::Mat::zeros(3, 1, CV_64F);\n+    const int created_landmarks = AppendTriangulatedLandmarks(\n+        inlier_prev, inlier_cur,\n+        identity_R, zero_t,\n+        current_R_, current_t_,\n+        current_points, current_ids\n+    );\n+\n+    if (created_landmarks < kMinLandmarksForTracking) {\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: triangulation too weak, reseeded\";\n+        return true;\n+    }\n+\n+    stage_ = Stage::kTracking;\n+    prev_frame_gray_ = frame_gray.clone();\n+    prev_kpts_ = current_points;\n+    prev_landmark_ids_ = current_ids;\n+    prev_pose_R_ = current_R_.clone();\n+    prev_pose_t_ = current_t_.clone();\n+    bootstrap_frame_gray_.release();\n+    bootstrap_kpts_.clear();\n+\n+    std::ostringstream oss;\n+    oss << \"tracking: initialized with \" << current_points.size()\n+        << \" landmarks\";\n+    status_text_ = oss.str();\n+\n+    return true;\n+}\n+\n+bool VisualOdometryTracker::TrackFrame(const cv::Mat& frame_gray) {\n+    if (prev_kpts_.size() < static_cast<size_t>(kMinLandmarksForTracking)) {\n+        ResetToBootstrap();\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: insufficient active landmarks\";\n+        return true;\n+    }\n+\n+    std::vector<cv::Point2f> tracked_kpts;\n+    std::vector<uchar> valid_status;\n+    TrackPoints(prev_frame_gray_, frame_gray, prev_kpts_, tracked_kpts, valid_status);\n+\n+    std::vector<cv::Point3f> object_points;\n+    std::vector<cv::Point2f> image_points;\n+    std::vector<int> tracked_ids;\n+    object_points.reserve(prev_kpts_.size());\n+    image_points.reserve(prev_kpts_.size());\n+    tracked_ids.reserve(prev_kpts_.size());\n+\n+    for (size_t i = 0; i < prev_kpts_.size(); ++i) {\n+        if (!valid_status.empty() && !valid_status[i]) {\n+            continue;\n+        }\n+\n+        const auto landmark_it = landmarks_.find(prev_landmark_ids_[i]);\n+        if (landmark_it == landmarks_.end()) {\n+            continue;\n+        }\n+\n+        object_points.push_back(landmark_it->second.position_w);\n+        image_points.push_back(tracked_kpts[i]);\n+        tracked_ids.push_back(prev_landmark_ids_[i]);\n+    }\n+\n+    if (object_points.size() < static_cast<size_t>(kMinLandmarksForTracking)) {\n+        ResetToBootstrap();\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: tracking dropped below recoverable limit\";\n+        return true;\n+    }\n+\n+    cv::Mat rvec;\n+    cv::Rodrigues(prev_pose_R_, rvec);\n+    cv::Mat tvec = prev_pose_t_.clone();\n+    cv::Mat inliers;\n+\n+    const bool pnp_ok = cv::solvePnPRansac(\n+        object_points, image_points, K_, cv::noArray(),\n+        rvec, tvec, true,\n+        150,\n+        kPnPMaxReprojectionErrorPx,\n+        0.999,\n+        inliers,\n+        cv::SOLVEPNP_ITERATIVE\n+    );\n+\n+    if (!pnp_ok || inliers.rows < kPnPMinInliers) {\n+        ResetToBootstrap();\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: PnP failed, reseeded\";\n+        return true;\n+    }\n+\n+    std::vector<cv::Point3f> inlier_object_points;\n+    std::vector<cv::Point2f> inlier_image_points;\n+    std::vector<int> inlier_ids;\n+    inlier_object_points.reserve(inliers.rows);\n+    inlier_image_points.reserve(inliers.rows);\n+    inlier_ids.reserve(inliers.rows);\n+\n+    for (int i = 0; i < inliers.rows; ++i) {\n+        const int idx = inliers.at<int>(i);\n+        inlier_object_points.push_back(object_points[idx]);\n+        inlier_image_points.push_back(image_points[idx]);\n+        inlier_ids.push_back(tracked_ids[idx]);\n+    }\n+\n+    cv::solvePnP(\n+        inlier_object_points, inlier_image_points, K_, cv::noArray(),\n+        rvec, tvec, true, cv::SOLVEPNP_ITERATIVE\n+    );\n+\n+    cv::Rodrigues(rvec, current_R_);\n+    current_t_ = tvec.clone();\n+\n+    std::vector<cv::Point2f> refined_points = inlier_image_points;\n+    std::vector<int> refined_ids = inlier_ids;\n+    for (const int id : refined_ids) {\n+        auto landmark_it = landmarks_.find(id);\n+        if (landmark_it != landmarks_.end()) {\n+            landmark_it->second.observations += 1;\n         }\n     }\n \n-    // ---------------------------------------------------------\n-    // Phase 3: Motion Estimation and Implicit Keyframe Management\n-    // ---------------------------------------------------------\n-    \n-    // Require a minimum average pixel displacement to trigger pose estimation.\n-    // This threshold filters out micro-jitter and ensures a sufficiently wide \n-    // baseline for accurate epipolar geometry computation.\n-    if (avg_dist > 2.0) {\n-        cv::Mat R, t, inlier_mask;\n-        std::tie(R, t, inlier_mask) = geo_solver_.EstimatePose(matched_prev, matched_cur);\n-\n-        // Ensure the pose recovery succeeded and is supported by a robust number of inliers.\n-        // This prevents aggressive trajectory jumps caused by severe motion blur or dynamic objects.\n-        if (!R.empty() && !t.empty() && cv::countNonZero(inlier_mask) > 15) {\n-            \n-            // Inject pseudo-scale heuristic: map average pixel disparity to physical translation magnitude.\n-            // This dynamic scaling allows the monocular system to approximate velocity changes.\n-            double fake_scale = avg_dist / 20.0; \n-\n-            // Convert matrices to double precision (CV_64F) prior to multiplication \n-            // to maintain strict numerical stability.\n-            R.convertTo(R, CV_64F);\n-            t.convertTo(t, CV_64F);\n-\n-            // Update the global trajectory.\n-            // Strict rotation limits are deliberately omitted here to accommodate \n-            // aggressive cornering movements in the dataset.\n-            cur_t_ = cur_t_ + fake_scale * (cur_R_ * t);\n-            cur_R_ = cur_R_ * R;\n-\n-            // Implicit Keyframe Mechanism:\n-            // Only update the reference features (prev_kpts_) when a valid camera movement is recorded.\n-            // If the camera is nearly stationary, the KLT tracker will safely continue tracking \n-            // from the last valid keyframe, accumulating disparity until it crosses the threshold.\n-            prev_kpts_ = matched_cur;\n-            prev_frame_gray_ = frame_gray;\n-        }\n+    AddLandmarksFromMotion(\n+        prev_frame_gray_, frame_gray,\n+        prev_pose_R_, prev_pose_t_,\n+        current_R_, current_t_,\n+        prev_kpts_,\n+        refined_points, refined_ids\n+    );\n+\n+    if (refined_points.size() < static_cast<size_t>(kTrackingMinFeatures)) {\n+        AddLandmarksFromMotion(\n+            prev_frame_gray_, frame_gray,\n+            prev_pose_R_, prev_pose_t_,\n+            current_R_, current_t_,\n+            {},\n+            refined_points, refined_ids\n+        );\n     }\n \n-    // ---------------------------------------------------------\n-    // Phase 4: Feature Pool Management\n-    // ---------------------------------------------------------\n-    \n-    // Replenish the feature pool if a significant number of points are lost \n-    // due to occlusion, severe rotation, or objects exiting the field of view.\n-    if (prev_kpts_.size() < kMinFeatures) {\n-        DetectNewFeatures(frame_gray, prev_kpts_);\n-        prev_frame_gray_ = frame_gray;\n-        std::cout << \"[Tracker] Feature pool replenished. Current size: \" << prev_kpts_.size() << std::endl;\n+    prev_frame_gray_ = frame_gray.clone();\n+    prev_kpts_ = refined_points;\n+    prev_landmark_ids_ = refined_ids;\n+    prev_pose_R_ = current_R_.clone();\n+    prev_pose_t_ = current_t_.clone();\n+\n+    std::ostringstream oss;\n+    oss << \"tracking: \" << refined_points.size()\n+        << \" active / \" << landmarks_.size() << \" map points\";\n+    status_text_ = oss.str();\n+\n+    return true;\n+}\n+\n+int VisualOdometryTracker::AppendTriangulatedLandmarks(\n+    const std::vector<cv::Point2f>& pts1,\n+    const std::vector<cv::Point2f>& pts2,\n+    const cv::Mat& R1, const cv::Mat& t1,\n+    const cv::Mat& R2, const cv::Mat& t2,\n+    std::vector<cv::Point2f>& accepted_cur_points,\n+    std::vector<int>& accepted_landmark_ids) {\n+    if (pts1.size() < static_cast<size_t>(kMinLandmarksForTracking) || pts1.size() != pts2.size()) {\n+        return 0;\n+    }\n+\n+    cv::Mat points_4d;\n+    const cv::Mat P1 = ComposeProjectionMatrix(R1, t1);\n+    const cv::Mat P2 = ComposeProjectionMatrix(R2, t2);\n+    cv::triangulatePoints(P1, P2, pts1, pts2, points_4d);\n+    points_4d.convertTo(points_4d, CV_64F);\n+\n+    const cv::Mat C1 = CameraPositionFromPose(R1, t1);\n+    const cv::Mat C2 = CameraPositionFromPose(R2, t2);\n+\n+    auto project_error = [this](const cv::Mat& R, const cv::Mat& t,\n+                                const cv::Vec3d& point_w,\n+                                const cv::Point2f& measurement) {\n+        cv::Mat X = (cv::Mat_<double>(3, 1) << point_w[0], point_w[1], point_w[2]);\n+        cv::Mat x_cam = R * X + t;\n+        const double z = x_cam.at<double>(2);\n+        if (z <= 1e-6) {\n+            return std::numeric_limits<double>::infinity();\n+        }\n+\n+        const double fx = K_.at<double>(0, 0);\n+        const double fy = K_.at<double>(1, 1);\n+        const double cx = K_.at<double>(0, 2);\n+        const double cy = K_.at<double>(1, 2);\n+        const double u = fx * x_cam.at<double>(0) / z + cx;\n+        const double v = fy * x_cam.at<double>(1) / z + cy;\n+        return std::hypot(u - measurement.x, v - measurement.y);\n+    };\n+\n+    int appended = 0;\n+    for (int col = 0; col < points_4d.cols; ++col) {\n+        const double w = points_4d.at<double>(3, col);\n+        if (std::abs(w) < 1e-9) {\n+            continue;\n+        }\n+\n+        const cv::Vec3d point_w(\n+            points_4d.at<double>(0, col) / w,\n+            points_4d.at<double>(1, col) / w,\n+            points_4d.at<double>(2, col) / w\n+        );\n+\n+        if (!std::isfinite(point_w[0]) || !std::isfinite(point_w[1]) || !std::isfinite(point_w[2])) {\n+            continue;\n+        }\n+\n+        cv::Mat X = (cv::Mat_<double>(3, 1) << point_w[0], point_w[1], point_w[2]);\n+        const cv::Mat x1 = R1 * X + t1;\n+        const cv::Mat x2 = R2 * X + t2;\n+        if (x1.at<double>(2) <= 0.0 || x2.at<double>(2) <= 0.0) {\n+            continue;\n+        }\n+\n+        cv::Vec3d ray1(\n+            point_w[0] - C1.at<double>(0),\n+            point_w[1] - C1.at<double>(1),\n+            point_w[2] - C1.at<double>(2)\n+        );\n+        cv::Vec3d ray2(\n+            point_w[0] - C2.at<double>(0),\n+            point_w[1] - C2.at<double>(1),\n+            point_w[2] - C2.at<double>(2)\n+        );\n+        const double denom = cv::norm(ray1) * cv::norm(ray2);\n+        if (denom <= 1e-9) {\n+            continue;\n+        }\n+\n+        double cos_angle = ray1.dot(ray2) / denom;\n+        cos_angle = std::max(-1.0, std::min(1.0, cos_angle));\n+        const double parallax_deg = std::acos(cos_angle) * 180.0 / CV_PI;\n+        if (parallax_deg < kMinTriangulationParallaxDeg) {\n+            continue;\n+        }\n+\n+        const double reproj_err_1 = project_error(R1, t1, point_w, pts1[col]);\n+        const double reproj_err_2 = project_error(R2, t2, point_w, pts2[col]);\n+        if (reproj_err_1 > kMaxReprojectionErrorPx || reproj_err_2 > kMaxReprojectionErrorPx) {\n+            continue;\n+        }\n+\n+        bool too_close = false;\n+        for (const auto& existing_pt : accepted_cur_points) {\n+            if (cv::norm(existing_pt - pts2[col]) < kMinFeatureDistance) {\n+                too_close = true;\n+                break;\n+            }\n+        }\n+        if (too_close) {\n+            continue;\n+        }\n+\n+        const int landmark_id = next_landmark_id_++;\n+        landmarks_[landmark_id] = Landmark{\n+            cv::Point3f(static_cast<float>(point_w[0]),\n+                        static_cast<float>(point_w[1]),\n+                        static_cast<float>(point_w[2])),\n+            2\n+        };\n+        accepted_cur_points.push_back(pts2[col]);\n+        accepted_landmark_ids.push_back(landmark_id);\n+        ++appended;\n+    }\n+\n+    return appended;\n+}\n+\n+void VisualOdometryTracker::AddLandmarksFromMotion(\n+    const cv::Mat& prev_gray, const cv::Mat& cur_gray,\n+    const cv::Mat& prev_R, const cv::Mat& prev_t,\n+    const cv::Mat& cur_R, const cv::Mat& cur_t,\n+    const std::vector<cv::Point2f>& occupied_prev,\n+    std::vector<cv::Point2f>& cur_points,\n+    std::vector<int>& cur_ids) {\n+    if (cur_points.size() >= static_cast<size_t>(kTargetActiveTracks)) {\n+        return;\n+    }\n+\n+    const cv::Mat prev_center = CameraPositionFromPose(prev_R, prev_t);\n+    const cv::Mat cur_center = CameraPositionFromPose(cur_R, cur_t);\n+    if (cv::norm(cur_center - prev_center) < 0.02) {\n+        return;\n+    }\n+\n+    std::vector<cv::Point2f> candidate_prev;\n+    DetectNewFeatures(\n+        prev_gray,\n+        occupied_prev.empty() ? cur_points : occupied_prev,\n+        candidate_prev,\n+        kMaxFeatureCount - static_cast<int>(cur_points.size())\n+    );\n+\n+    if (candidate_prev.size() < static_cast<size_t>(kMinLandmarksForTracking)) {\n+        return;\n+    }\n+\n+    std::vector<cv::Point2f> candidate_cur;\n+    std::vector<uchar> candidate_status;\n+    TrackPoints(prev_gray, cur_gray, candidate_prev, candidate_cur, candidate_status);\n+\n+    std::vector<cv::Point2f> filtered_prev;\n+    std::vector<cv::Point2f> filtered_cur;\n+    filtered_prev.reserve(candidate_prev.size());\n+    filtered_cur.reserve(candidate_prev.size());\n+\n+    for (size_t i = 0; i < candidate_prev.size(); ++i) {\n+        if (!candidate_status.empty() && !candidate_status[i]) {\n+            continue;\n+        }\n+\n+        bool duplicate = false;\n+        for (const auto& existing_pt : cur_points) {\n+            if (cv::norm(existing_pt - candidate_cur[i]) < kMinFeatureDistance) {\n+                duplicate = true;\n+                break;\n+            }\n+        }\n+        if (duplicate) {\n+            continue;\n+        }\n+\n+        filtered_prev.push_back(candidate_prev[i]);\n+        filtered_cur.push_back(candidate_cur[i]);\n+    }\n+\n+    AppendTriangulatedLandmarks(\n+        filtered_prev, filtered_cur,\n+        prev_R, prev_t,\n+        cur_R, cur_t,\n+        cur_points, cur_ids\n+    );\n+}\n+\n+cv::Mat VisualOdometryTracker::ComposeProjectionMatrix(const cv::Mat& R, const cv::Mat& t) const {\n+    cv::Mat Rt;\n+    cv::hconcat(R, t, Rt);\n+    return K_ * Rt;\n+}\n+\n+cv::Mat VisualOdometryTracker::CameraPositionFromPose(const cv::Mat& R, const cv::Mat& t) const {\n+    return -R.t() * t;\n+}\n+\n+bool VisualOdometryTracker::IsInsideImage(const cv::Point2f& pt, const cv::Size& size, int border) {\n+    return pt.x >= border && pt.y >= border &&\n+           pt.x < static_cast<float>(size.width - border) &&\n+           pt.y < static_cast<float>(size.height - border);\n+}\n+\n+double VisualOdometryTracker::ComputeMedian(std::vector<double> values) {\n+    if (values.empty()) {\n+        return 0.0;\n+    }\n+\n+    const size_t mid = values.size() / 2;\n+    std::nth_element(values.begin(), values.begin() + mid, values.end());\n+    double median = values[mid];\n+    if (values.size() % 2 == 0) {\n+        std::nth_element(values.begin(), values.begin() + mid - 1, values.end());\n+        median = 0.5 * (median + values[mid - 1]);\n     }\n \n-    return true;\n-}\n-\n-cv::Mat VisualOdometryTracker::GetCurrentR() const { return cur_R_.clone(); }\n-cv::Mat VisualOdometryTracker::GetCurrentT() const { return cur_t_.clone(); }\n-std::vector<cv::Point2f> VisualOdometryTracker::GetTrackedPoints() const { return prev_kpts_; }\n+    return median;\n+}\n \n }  // namespace tracker\n }  // namespace deepvo\n*** Update File: /home/schrieffer/FxxkVO/include/deepvo/visualizer.h\n@@\n class Visualizer2D {\n  public:\n     explicit Visualizer2D(const std::string& window_name);\n-    \n     ~Visualizer2D();\n \n     bool ShowFrame(cv::Mat& frame, \n                    const std::vector<cv::Point2f>& tracked_points, \n-                   const cv::Mat& t);\n+                   const cv::Mat& position,\n+                   const std::string& status_text);\n \n  private:\n     std::string window_name_;\n };\n*** Update File: /home/schrieffer/FxxkVO/src/visualizer.cpp\n@@\n bool Visualizer2D::ShowFrame(cv::Mat& frame, \n                              const std::vector<cv::Point2f>& tracked_points, \n-                             const cv::Mat& t) {\n+                             const cv::Mat& position,\n+                             const std::string& status_text) {\n                                 \n     for (const auto& pt : tracked_points) {\n         cv::circle(frame, pt, 3, cv::Scalar(0, 255, 0), cv::FILLED);\n     }\n \n-    if (!t.empty() && t.rows == 3 && t.cols == 1) {\n-        std::string t_str = cv::format(\"T: [%.2f, %.2f, %.2f]\", \n-                                       t.at<double>(0), t.at<double>(1), t.at<double>(2));\n-        cv::putText(frame, t_str, cv::Point(20, 40), \n+    if (!position.empty() && position.rows == 3 && position.cols == 1) {\n+        std::string t_str = cv::format(\"Pos: [%.2f, %.2f, %.2f]\",\n+                                       position.at<double>(0), position.at<double>(1), position.at<double>(2));\n+        cv::putText(frame, t_str, cv::Point(20, 36),\n                     cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 255), 2);\n     }\n \n+    cv::putText(frame, status_text, cv::Point(20, 70),\n+                cv::FONT_HERSHEY_SIMPLEX, 0.65, cv::Scalar(255, 200, 0), 2);\n+\n     cv::imshow(window_name_, frame);\n \n     if (cv::waitKey(30) == 27) {\n         std::cout << \"[Info] User interrupted the tracking.\" << std::endl;\n         return false;\n*** Update File: /home/schrieffer/FxxkVO/app/main.cpp\n@@\n #include <iostream>\n #include <fstream>\n #include <string>\n #include <vector>\n+#include <algorithm>\n \n #include <opencv2/opencv.hpp>\n \n #include \"deepvo/tracker.h\"\n #include \"deepvo/visualizer.h\"\n \n+namespace {\n+\n+cv::Mat BuildIntrinsics(double width, double height, int argc, char* argv[]) {\n+    if (argc == 7) {\n+        return (cv::Mat_<double>(3, 3) <<\n+            std::stod(argv[3]), 0.0, std::stod(argv[5]),\n+            0.0, std::stod(argv[4]), std::stod(argv[6]),\n+            0.0, 0.0, 1.0);\n+    }\n+\n+    const double cx = width * 0.5;\n+    const double cy = height * 0.5;\n+    const double focal = 0.9 * std::max(width, height);\n+    return (cv::Mat_<double>(3, 3) <<\n+        focal, 0.0, cx,\n+        0.0, focal, cy,\n+        0.0, 0.0, 1.0);\n+}\n+\n+}  // namespace\n+\n int main(int argc, char* argv[]) {\n-    std::cout << \"  OptiVO C++ Engine Initialized   \" << std::endl;\n+    std::cout << \"  DeepVO Sparse Monocular Engine Initialized   \" << std::endl;\n \n-    if (argc < 3) {\n+    if (argc != 3 && argc != 7) {\n         std::cerr << \"[Error] Invalid arguments.\" << std::endl;\n-        std::cerr << \"Usage: ./deepvo_app <input_video_path> <output_csv_path>\" << std::endl;\n+        std::cerr << \"Usage: ./deepvo_app <input_video_path> <output_csv_path> [fx fy cx cy]\" << std::endl;\n         return -1;\n     }\n \n     std::string video_source = argv[1];\n     std::string output_csv = argv[2];\n-\n-    cv::Mat K = (cv::Mat_<double>(3, 3) << \n-        1000.0,    0.0,  640.0,\n-           0.0, 1000.0,  360.0,\n-           0.0,    0.0,    1.0);\n-\n-    deepvo::tracker::VisualOdometryTracker tracker(K);\n-\n-    deepvo::visualization::Visualizer2D viewer(\"DeepVO - KLT Tracker\");\n \n     cv::VideoCapture cap;\n     if (video_source == \"0\") {\n         cap.open(0);\n@@\n     if (!cap.isOpened()) {\n         std::cerr << \"[Error] Cannot open video stream: \" << video_source << std::endl;\n         return -1;\n     }\n \n+    const double frame_width = std::max(1.0, cap.get(cv::CAP_PROP_FRAME_WIDTH));\n+    const double frame_height = std::max(1.0, cap.get(cv::CAP_PROP_FRAME_HEIGHT));\n+    cv::Mat K = BuildIntrinsics(frame_width, frame_height, argc, argv);\n+    std::cout << \"[Info] Using intrinsics:\\n\" << K << std::endl;\n+\n+    deepvo::tracker::VisualOdometryTracker tracker(K);\n+    deepvo::visualization::Visualizer2D viewer(\"DeepVO - Sparse VO\");\n+\n     std::ofstream traj_file(output_csv);\n     if (!traj_file.is_open()) {\n         std::cerr << \"[Error] Could not open trajectory CSV for writing: \" << output_csv << std::endl;\n         return -1;\n@@\n-        bool success = tracker.ProcessFrame(frame);\n+        const bool success = tracker.ProcessFrame(frame);\n \n         if (success) {\n-            cv::Mat t = tracker.GetCurrentT();\n-            \n-            traj_file << t.at<double>(0) << \",\" \n-                      << t.at<double>(1) << \",\" \n-                      << t.at<double>(2) << \"\\n\";\n-            traj_file.flush(); \n-\n-            // 【核心重构】：把画图和退出逻辑全部甩给 Viewer\n-            std::vector<cv::Point2f> tracked_points = tracker.GetTrackedPoints();\n-            if (!viewer.ShowFrame(frame, tracked_points, t)) {\n-                break; // 如果返回 false (按下了 ESC)，直接跳出循环\n+            const cv::Mat position = tracker.GetCurrentPosition();\n+            if (!position.empty() && position.rows == 3 && position.cols == 1) {\n+                traj_file << position.at<double>(0) << \",\"\n+                          << position.at<double>(1) << \",\"\n+                          << position.at<double>(2) << \"\\n\";\n+                traj_file.flush();\n+            }\n+\n+            const std::vector<cv::Point2f> tracked_points = tracker.GetTrackedPoints();\n+            if (!viewer.ShowFrame(frame, tracked_points, position, tracker.GetStatusText())) {\n+                break;\n             }\n         }\n     }\n*** Update File: /home/schrieffer/FxxkVO/scripts/run.sh\n@@\n-# Define explicit paths based on project structure\n-VIDEO_PATH=\"./data/dataset/test_video.mp4\"\n+# Define explicit paths based on project structure\n POSE_DIR=\"./data/poses\"\n POSE_FILE=\"${POSE_DIR}/trajectory.csv\"\n CPP_EXECUTABLE=\"./build/deepvo_app\"\n PYTHON_VIEWER=\"./scripts/viewer_3d.py\"\n PYTHON_EXECUTABLE=\"./venv/bin/python\"\n+\n+if [ $# -ne 1 ] && [ $# -ne 5 ]; then\n+    echo \"Usage: ./scripts/run.sh <input_video_path> [fx fy cx cy]\"\n+    exit 1\n+fi\n+\n+VIDEO_PATH=\"$1\"\n+EXTRA_ARGS=()\n+if [ $# -eq 5 ]; then\n+    EXTRA_ARGS=(\"$2\" \"$3\" \"$4\" \"$5\")\n+fi\n \n # Ensure the output directory exists\n mkdir -p ${POSE_DIR}\n@@\n echo \"[Launch Script] Igniting C++ VO Engine...\"\n-${CPP_EXECUTABLE} ${VIDEO_PATH} ${POSE_FILE}\n+\"${CPP_EXECUTABLE}\" \"${VIDEO_PATH}\" \"${POSE_FILE}\" \"${EXTRA_ARGS[@]}\"\n*** End Patch\n",
+          "timestamp": "2026-04-07T07:42:02.549Z"
+        },
+        {
+          "type": "assistant",
+          "text": "补丁没直接套上，我先读取当前文件原文重新对位，然后继续落地，不会停在半改状态。",
+          "timestamp": "2026-04-07T07:42:13.069Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,260p' include/deepvo/tracker.h",
+            "max_output_tokens": 5000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:42:13.110Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,320p' src/tracker.cpp",
+            "max_output_tokens": 7000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:42:13.116Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' include/deepvo/visualizer.h",
+            "max_output_tokens": 2000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:42:13.142Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' src/visualizer.cpp",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:42:13.149Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,240p' app/main.cpp",
+            "max_output_tokens": 5000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:42:13.174Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "sed -n '1,220p' scripts/run.sh",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:42:13.190Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Delete File: /home/schrieffer/FxxkVO/include/deepvo/tracker.h\n*** Add File: /home/schrieffer/FxxkVO/include/deepvo/tracker.h\n+#pragma once\n+\n+#include <string>\n+#include <unordered_map>\n+#include <vector>\n+\n+#include <opencv2/opencv.hpp>\n+\n+#include \"deepvo/geometry/epipolar.h\"\n+\n+namespace deepvo {\n+namespace tracker {\n+\n+class VisualOdometryTracker {\n+ public:\n+    explicit VisualOdometryTracker(const cv::Mat& K);\n+\n+    bool ProcessFrame(const cv::Mat& frame);\n+\n+    cv::Mat GetCurrentR() const;\n+    cv::Mat GetCurrentT() const;\n+    cv::Mat GetCurrentPosition() const;\n+    std::vector<cv::Point2f> GetTrackedPoints() const;\n+    std::string GetStatusText() const;\n+    int GetVisibleTrackCount() const;\n+    int GetLandmarkCount() const;\n+\n+ private:\n+    enum class Stage {\n+        kBootstrap,\n+        kTracking,\n+    };\n+\n+    struct Landmark {\n+        cv::Point3f position_w;\n+        int observations = 0;\n+    };\n+\n+    static constexpr int kBootstrapMinFeatures = 300;\n+    static constexpr int kTrackingMinFeatures = 80;\n+    static constexpr int kTargetActiveTracks = 320;\n+    static constexpr int kMaxFeatureCount = 1200;\n+    static constexpr int kMinLandmarksForTracking = 20;\n+    static constexpr int kPnPMinInliers = 25;\n+    static constexpr double kMinFeatureDistance = 12.0;\n+    static constexpr double kBootstrapMinParallaxPixels = 18.0;\n+    static constexpr double kMinTriangulationParallaxDeg = 1.5;\n+    static constexpr double kMaxReprojectionErrorPx = 3.0;\n+    static constexpr double kPnPMaxReprojectionErrorPx = 3.0;\n+\n+    geometry::EpipolarGeometry geo_solver_;\n+    Stage stage_;\n+\n+    cv::Mat K_;\n+    cv::Mat current_R_;\n+    cv::Mat current_t_;\n+    cv::Mat prev_pose_R_;\n+    cv::Mat prev_pose_t_;\n+\n+    cv::Mat prev_frame_gray_;\n+    std::vector<cv::Point2f> prev_kpts_;\n+    std::vector<int> prev_landmark_ids_;\n+\n+    cv::Mat bootstrap_frame_gray_;\n+    std::vector<cv::Point2f> bootstrap_kpts_;\n+\n+    std::unordered_map<int, Landmark> landmarks_;\n+    int next_landmark_id_;\n+    std::string status_text_;\n+\n+    void ResetToBootstrap();\n+    void StartBootstrap(const cv::Mat& frame_gray);\n+    bool TryBootstrap(const cv::Mat& frame_gray);\n+    bool TrackFrame(const cv::Mat& frame_gray);\n+\n+    void DetectNewFeatures(const cv::Mat& frame_gray,\n+                           const std::vector<cv::Point2f>& occupied_points,\n+                           std::vector<cv::Point2f>& kpts,\n+                           int max_corners) const;\n+\n+    bool TrackPoints(const cv::Mat& prev_gray, const cv::Mat& cur_gray,\n+                     const std::vector<cv::Point2f>& prev_pts,\n+                     std::vector<cv::Point2f>& cur_pts,\n+                     std::vector<uchar>& valid_status) const;\n+\n+    int AppendTriangulatedLandmarks(const std::vector<cv::Point2f>& pts1,\n+                                    const std::vector<cv::Point2f>& pts2,\n+                                    const cv::Mat& R1, const cv::Mat& t1,\n+                                    const cv::Mat& R2, const cv::Mat& t2,\n+                                    std::vector<cv::Point2f>& accepted_cur_points,\n+                                    std::vector<int>& accepted_landmark_ids);\n+\n+    void AddLandmarksFromMotion(const cv::Mat& prev_gray, const cv::Mat& cur_gray,\n+                                const cv::Mat& prev_R, const cv::Mat& prev_t,\n+                                const cv::Mat& cur_R, const cv::Mat& cur_t,\n+                                const std::vector<cv::Point2f>& occupied_prev,\n+                                std::vector<cv::Point2f>& cur_points,\n+                                std::vector<int>& cur_ids);\n+\n+    cv::Mat ComposeProjectionMatrix(const cv::Mat& R, const cv::Mat& t) const;\n+    cv::Mat CameraPositionFromPose(const cv::Mat& R, const cv::Mat& t) const;\n+\n+    static bool IsInsideImage(const cv::Point2f& pt, const cv::Size& size, int border = 8);\n+    static double ComputeMedian(std::vector<double> values);\n+};\n+\n+}  // namespace tracker\n+}  // namespace deepvo\n*** Delete File: /home/schrieffer/FxxkVO/src/tracker.cpp\n*** Add File: /home/schrieffer/FxxkVO/src/tracker.cpp\n+#include \"deepvo/tracker.h\"\n+\n+#include <algorithm>\n+#include <cmath>\n+#include <iostream>\n+#include <limits>\n+#include <sstream>\n+\n+namespace deepvo {\n+namespace tracker {\n+\n+VisualOdometryTracker::VisualOdometryTracker(const cv::Mat& K)\n+    : geo_solver_(K),\n+      stage_(Stage::kBootstrap),\n+      K_(K.clone()),\n+      next_landmark_id_(0),\n+      status_text_(\"bootstrap: waiting for parallax\") {\n+    current_R_ = cv::Mat::eye(3, 3, CV_64F);\n+    current_t_ = cv::Mat::zeros(3, 1, CV_64F);\n+    prev_pose_R_ = current_R_.clone();\n+    prev_pose_t_ = current_t_.clone();\n+}\n+\n+bool VisualOdometryTracker::ProcessFrame(const cv::Mat& frame) {\n+    if (frame.empty()) {\n+        status_text_ = \"input error: empty frame\";\n+        return false;\n+    }\n+\n+    cv::Mat frame_gray;\n+    if (frame.channels() == 3) {\n+        cv::cvtColor(frame, frame_gray, cv::COLOR_BGR2GRAY);\n+    } else {\n+        frame_gray = frame.clone();\n+    }\n+\n+    if (stage_ == Stage::kBootstrap) {\n+        return TryBootstrap(frame_gray);\n+    }\n+    return TrackFrame(frame_gray);\n+}\n+\n+cv::Mat VisualOdometryTracker::GetCurrentR() const {\n+    return current_R_.clone();\n+}\n+\n+cv::Mat VisualOdometryTracker::GetCurrentT() const {\n+    return current_t_.clone();\n+}\n+\n+cv::Mat VisualOdometryTracker::GetCurrentPosition() const {\n+    return CameraPositionFromPose(current_R_, current_t_);\n+}\n+\n+std::vector<cv::Point2f> VisualOdometryTracker::GetTrackedPoints() const {\n+    if (stage_ == Stage::kTracking) {\n+        return prev_kpts_;\n+    }\n+    return bootstrap_kpts_;\n+}\n+\n+std::string VisualOdometryTracker::GetStatusText() const {\n+    return status_text_;\n+}\n+\n+int VisualOdometryTracker::GetVisibleTrackCount() const {\n+    return static_cast<int>(GetTrackedPoints().size());\n+}\n+\n+int VisualOdometryTracker::GetLandmarkCount() const {\n+    return static_cast<int>(landmarks_.size());\n+}\n+\n+void VisualOdometryTracker::ResetToBootstrap() {\n+    stage_ = Stage::kBootstrap;\n+    current_R_ = cv::Mat::eye(3, 3, CV_64F);\n+    current_t_ = cv::Mat::zeros(3, 1, CV_64F);\n+    prev_pose_R_ = current_R_.clone();\n+    prev_pose_t_ = current_t_.clone();\n+    prev_frame_gray_.release();\n+    prev_kpts_.clear();\n+    prev_landmark_ids_.clear();\n+    bootstrap_frame_gray_.release();\n+    bootstrap_kpts_.clear();\n+    landmarks_.clear();\n+    next_landmark_id_ = 0;\n+}\n+\n+void VisualOdometryTracker::StartBootstrap(const cv::Mat& frame_gray) {\n+    bootstrap_frame_gray_ = frame_gray.clone();\n+    DetectNewFeatures(frame_gray, {}, bootstrap_kpts_, kMaxFeatureCount);\n+\n+    std::ostringstream oss;\n+    oss << \"bootstrap: seeded \" << bootstrap_kpts_.size() << \" features\";\n+    status_text_ = oss.str();\n+}\n+\n+void VisualOdometryTracker::DetectNewFeatures(const cv::Mat& frame_gray,\n+                                              const std::vector<cv::Point2f>& occupied_points,\n+                                              std::vector<cv::Point2f>& kpts,\n+                                              int max_corners) const {\n+    cv::Mat mask(frame_gray.size(), CV_8UC1, cv::Scalar(255));\n+    for (const auto& pt : occupied_points) {\n+        cv::circle(mask, pt, static_cast<int>(kMinFeatureDistance), cv::Scalar(0), cv::FILLED);\n+    }\n+\n+    cv::goodFeaturesToTrack(\n+        frame_gray,\n+        kpts,\n+        max_corners,\n+        0.01,\n+        kMinFeatureDistance,\n+        mask,\n+        3,\n+        false,\n+        0.04\n+    );\n+}\n+\n+bool VisualOdometryTracker::TrackPoints(const cv::Mat& prev_gray, const cv::Mat& cur_gray,\n+                                        const std::vector<cv::Point2f>& prev_pts,\n+                                        std::vector<cv::Point2f>& cur_pts,\n+                                        std::vector<uchar>& valid_status) const {\n+    cur_pts.clear();\n+    valid_status.clear();\n+    if (prev_pts.empty()) {\n+        return false;\n+    }\n+\n+    std::vector<uchar> forward_status;\n+    std::vector<float> forward_error;\n+    cv::calcOpticalFlowPyrLK(\n+        prev_gray, cur_gray, prev_pts, cur_pts,\n+        forward_status, forward_error,\n+        cv::Size(21, 21), 3,\n+        cv::TermCriteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 30, 0.01)\n+    );\n+\n+    std::vector<cv::Point2f> backtracked_pts;\n+    std::vector<uchar> backward_status;\n+    std::vector<float> backward_error;\n+    cv::calcOpticalFlowPyrLK(\n+        cur_gray, prev_gray, cur_pts, backtracked_pts,\n+        backward_status, backward_error,\n+        cv::Size(21, 21), 3,\n+        cv::TermCriteria(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 30, 0.01)\n+    );\n+\n+    valid_status.assign(prev_pts.size(), 0);\n+    const cv::Size image_size = cur_gray.size();\n+    for (size_t i = 0; i < prev_pts.size(); ++i) {\n+        if (!forward_status[i] || !backward_status[i]) {\n+            continue;\n+        }\n+        if (!IsInsideImage(cur_pts[i], image_size)) {\n+            continue;\n+        }\n+\n+        const double fb_error = cv::norm(prev_pts[i] - backtracked_pts[i]);\n+        if (fb_error > 1.5) {\n+            continue;\n+        }\n+\n+        valid_status[i] = 1;\n+    }\n+\n+    return true;\n+}\n+\n+bool VisualOdometryTracker::TryBootstrap(const cv::Mat& frame_gray) {\n+    if (bootstrap_frame_gray_.empty()) {\n+        StartBootstrap(frame_gray);\n+        return true;\n+    }\n+\n+    std::vector<cv::Point2f> tracked_kpts;\n+    std::vector<uchar> valid_status;\n+    TrackPoints(bootstrap_frame_gray_, frame_gray, bootstrap_kpts_, tracked_kpts, valid_status);\n+\n+    std::vector<cv::Point2f> matched_prev;\n+    std::vector<cv::Point2f> matched_cur;\n+    std::vector<double> disparities;\n+    matched_prev.reserve(bootstrap_kpts_.size());\n+    matched_cur.reserve(bootstrap_kpts_.size());\n+    disparities.reserve(bootstrap_kpts_.size());\n+\n+    for (size_t i = 0; i < bootstrap_kpts_.size(); ++i) {\n+        if (!valid_status.empty() && !valid_status[i]) {\n+            continue;\n+        }\n+        matched_prev.push_back(bootstrap_kpts_[i]);\n+        matched_cur.push_back(tracked_kpts[i]);\n+        disparities.push_back(cv::norm(tracked_kpts[i] - bootstrap_kpts_[i]));\n+    }\n+\n+    if (matched_cur.size() < static_cast<size_t>(kMinLandmarksForTracking)) {\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: refresh after track loss\";\n+        return true;\n+    }\n+\n+    const double median_parallax = ComputeMedian(std::move(disparities));\n+    if (matched_cur.size() < static_cast<size_t>(kBootstrapMinFeatures / 2) ||\n+        median_parallax < kBootstrapMinParallaxPixels) {\n+        std::ostringstream oss;\n+        oss << \"bootstrap: waiting for motion (\" << matched_cur.size() << \" tracks)\";\n+        status_text_ = oss.str();\n+        return true;\n+    }\n+\n+    cv::Mat R, t, inlier_mask;\n+    std::tie(R, t, inlier_mask) = geo_solver_.EstimatePose(matched_prev, matched_cur);\n+    if (R.empty() || t.empty() || cv::countNonZero(inlier_mask) < kPnPMinInliers) {\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: pose init failed, reseeded\";\n+        return true;\n+    }\n+\n+    R.convertTo(current_R_, CV_64F);\n+    t.convertTo(current_t_, CV_64F);\n+\n+    std::vector<cv::Point2f> inlier_prev;\n+    std::vector<cv::Point2f> inlier_cur;\n+    inlier_prev.reserve(matched_prev.size());\n+    inlier_cur.reserve(matched_cur.size());\n+    for (int i = 0; i < inlier_mask.rows; ++i) {\n+        if (inlier_mask.at<uchar>(i)) {\n+            inlier_prev.push_back(matched_prev[i]);\n+            inlier_cur.push_back(matched_cur[i]);\n+        }\n+    }\n+\n+    std::vector<cv::Point2f> current_points;\n+    std::vector<int> current_ids;\n+    const cv::Mat identity_R = cv::Mat::eye(3, 3, CV_64F);\n+    const cv::Mat zero_t = cv::Mat::zeros(3, 1, CV_64F);\n+    const int created_landmarks = AppendTriangulatedLandmarks(\n+        inlier_prev, inlier_cur,\n+        identity_R, zero_t,\n+        current_R_, current_t_,\n+        current_points, current_ids\n+    );\n+\n+    if (created_landmarks < kMinLandmarksForTracking) {\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: triangulation too weak, reseeded\";\n+        return true;\n+    }\n+\n+    stage_ = Stage::kTracking;\n+    prev_frame_gray_ = frame_gray.clone();\n+    prev_kpts_ = current_points;\n+    prev_landmark_ids_ = current_ids;\n+    prev_pose_R_ = current_R_.clone();\n+    prev_pose_t_ = current_t_.clone();\n+    bootstrap_frame_gray_.release();\n+    bootstrap_kpts_.clear();\n+\n+    std::ostringstream oss;\n+    oss << \"tracking: initialized with \" << current_points.size() << \" landmarks\";\n+    status_text_ = oss.str();\n+\n+    return true;\n+}\n+\n+bool VisualOdometryTracker::TrackFrame(const cv::Mat& frame_gray) {\n+    if (prev_kpts_.size() < static_cast<size_t>(kMinLandmarksForTracking)) {\n+        ResetToBootstrap();\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: insufficient active landmarks\";\n+        return true;\n+    }\n+\n+    std::vector<cv::Point2f> tracked_kpts;\n+    std::vector<uchar> valid_status;\n+    TrackPoints(prev_frame_gray_, frame_gray, prev_kpts_, tracked_kpts, valid_status);\n+\n+    std::vector<cv::Point3f> object_points;\n+    std::vector<cv::Point2f> image_points;\n+    std::vector<int> tracked_ids;\n+    object_points.reserve(prev_kpts_.size());\n+    image_points.reserve(prev_kpts_.size());\n+    tracked_ids.reserve(prev_kpts_.size());\n+\n+    for (size_t i = 0; i < prev_kpts_.size(); ++i) {\n+        if (!valid_status.empty() && !valid_status[i]) {\n+            continue;\n+        }\n+\n+        const auto landmark_it = landmarks_.find(prev_landmark_ids_[i]);\n+        if (landmark_it == landmarks_.end()) {\n+            continue;\n+        }\n+\n+        object_points.push_back(landmark_it->second.position_w);\n+        image_points.push_back(tracked_kpts[i]);\n+        tracked_ids.push_back(prev_landmark_ids_[i]);\n+    }\n+\n+    if (object_points.size() < static_cast<size_t>(kMinLandmarksForTracking)) {\n+        ResetToBootstrap();\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: tracking dropped below recoverable limit\";\n+        return true;\n+    }\n+\n+    cv::Mat rvec;\n+    cv::Rodrigues(prev_pose_R_, rvec);\n+    cv::Mat tvec = prev_pose_t_.clone();\n+    cv::Mat inliers;\n+\n+    const bool pnp_ok = cv::solvePnPRansac(\n+        object_points, image_points, K_, cv::noArray(),\n+        rvec, tvec, true,\n+        150,\n+        kPnPMaxReprojectionErrorPx,\n+        0.999,\n+        inliers,\n+        cv::SOLVEPNP_ITERATIVE\n+    );\n+\n+    if (!pnp_ok || inliers.rows < kPnPMinInliers) {\n+        ResetToBootstrap();\n+        StartBootstrap(frame_gray);\n+        status_text_ = \"bootstrap: PnP failed, reseeded\";\n+        return true;\n+    }\n+\n+    std::vector<cv::Point3f> inlier_object_points;\n+    std::vector<cv::Point2f> inlier_image_points;\n+    std::vector<int> inlier_ids;\n+    inlier_object_points.reserve(inliers.rows);\n+    inlier_image_points.reserve(inliers.rows);\n+    inlier_ids.reserve(inliers.rows);\n+\n+    for (int i = 0; i < inliers.rows; ++i) {\n+        const int idx = inliers.at<int>(i);\n+        inlier_object_points.push_back(object_points[idx]);\n+        inlier_image_points.push_back(image_points[idx]);\n+        inlier_ids.push_back(tracked_ids[idx]);\n+    }\n+\n+    cv::solvePnP(\n+        inlier_object_points, inlier_image_points, K_, cv::noArray(),\n+        rvec, tvec, true, cv::SOLVEPNP_ITERATIVE\n+    );\n+\n+    cv::Rodrigues(rvec, current_R_);\n+    current_t_ = tvec.clone();\n+\n+    std::vector<cv::Point2f> refined_points = inlier_image_points;\n+    std::vector<int> refined_ids = inlier_ids;\n+    for (const int id : refined_ids) {\n+        auto landmark_it = landmarks_.find(id);\n+        if (landmark_it != landmarks_.end()) {\n+            landmark_it->second.observations += 1;\n+        }\n+    }\n+\n+    AddLandmarksFromMotion(\n+        prev_frame_gray_, frame_gray,\n+        prev_pose_R_, prev_pose_t_,\n+        current_R_, current_t_,\n+        prev_kpts_,\n+        refined_points, refined_ids\n+    );\n+\n+    if (refined_points.size() < static_cast<size_t>(kTrackingMinFeatures)) {\n+        AddLandmarksFromMotion(\n+            prev_frame_gray_, frame_gray,\n+            prev_pose_R_, prev_pose_t_,\n+            current_R_, current_t_,\n+            {},\n+            refined_points, refined_ids\n+        );\n+    }\n+\n+    prev_frame_gray_ = frame_gray.clone();\n+    prev_kpts_ = refined_points;\n+    prev_landmark_ids_ = refined_ids;\n+    prev_pose_R_ = current_R_.clone();\n+    prev_pose_t_ = current_t_.clone();\n+\n+    std::ostringstream oss;\n+    oss << \"tracking: \" << refined_points.size()\n+        << \" active / \" << landmarks_.size() << \" map points\";\n+    status_text_ = oss.str();\n+\n+    return true;\n+}\n+\n+int VisualOdometryTracker::AppendTriangulatedLandmarks(\n+    const std::vector<cv::Point2f>& pts1,\n+    const std::vector<cv::Point2f>& pts2,\n+    const cv::Mat& R1, const cv::Mat& t1,\n+    const cv::Mat& R2, const cv::Mat& t2,\n+    std::vector<cv::Point2f>& accepted_cur_points,\n+    std::vector<int>& accepted_landmark_ids) {\n+    if (pts1.size() < static_cast<size_t>(kMinLandmarksForTracking) || pts1.size() != pts2.size()) {\n+        return 0;\n+    }\n+\n+    cv::Mat points_4d;\n+    const cv::Mat P1 = ComposeProjectionMatrix(R1, t1);\n+    const cv::Mat P2 = ComposeProjectionMatrix(R2, t2);\n+    cv::triangulatePoints(P1, P2, pts1, pts2, points_4d);\n+    points_4d.convertTo(points_4d, CV_64F);\n+\n+    const cv::Mat C1 = CameraPositionFromPose(R1, t1);\n+    const cv::Mat C2 = CameraPositionFromPose(R2, t2);\n+\n+    auto project_error = [this](const cv::Mat& R, const cv::Mat& t,\n+                                const cv::Vec3d& point_w,\n+                                const cv::Point2f& measurement) {\n+        cv::Mat X = (cv::Mat_<double>(3, 1) << point_w[0], point_w[1], point_w[2]);\n+        cv::Mat x_cam = R * X + t;\n+        const double z = x_cam.at<double>(2);\n+        if (z <= 1e-6) {\n+            return std::numeric_limits<double>::infinity();\n+        }\n+\n+        const double fx = K_.at<double>(0, 0);\n+        const double fy = K_.at<double>(1, 1);\n+        const double cx = K_.at<double>(0, 2);\n+        const double cy = K_.at<double>(1, 2);\n+        const double u = fx * x_cam.at<double>(0) / z + cx;\n+        const double v = fy * x_cam.at<double>(1) / z + cy;\n+        return std::hypot(u - measurement.x, v - measurement.y);\n+    };\n+\n+    int appended = 0;\n+    for (int col = 0; col < points_4d.cols; ++col) {\n+        const double w = points_4d.at<double>(3, col);\n+        if (std::abs(w) < 1e-9) {\n+            continue;\n+        }\n+\n+        const cv::Vec3d point_w(\n+            points_4d.at<double>(0, col) / w,\n+            points_4d.at<double>(1, col) / w,\n+            points_4d.at<double>(2, col) / w\n+        );\n+\n+        if (!std::isfinite(point_w[0]) || !std::isfinite(point_w[1]) || !std::isfinite(point_w[2])) {\n+            continue;\n+        }\n+\n+        cv::Mat X = (cv::Mat_<double>(3, 1) << point_w[0], point_w[1], point_w[2]);\n+        const cv::Mat x1 = R1 * X + t1;\n+        const cv::Mat x2 = R2 * X + t2;\n+        if (x1.at<double>(2) <= 0.0 || x2.at<double>(2) <= 0.0) {\n+            continue;\n+        }\n+\n+        cv::Vec3d ray1(\n+            point_w[0] - C1.at<double>(0),\n+            point_w[1] - C1.at<double>(1),\n+            point_w[2] - C1.at<double>(2)\n+        );\n+        cv::Vec3d ray2(\n+            point_w[0] - C2.at<double>(0),\n+            point_w[1] - C2.at<double>(1),\n+            point_w[2] - C2.at<double>(2)\n+        );\n+        const double denom = cv::norm(ray1) * cv::norm(ray2);\n+        if (denom <= 1e-9) {\n+            continue;\n+        }\n+\n+        double cos_angle = ray1.dot(ray2) / denom;\n+        cos_angle = std::max(-1.0, std::min(1.0, cos_angle));\n+        const double parallax_deg = std::acos(cos_angle) * 180.0 / CV_PI;\n+        if (parallax_deg < kMinTriangulationParallaxDeg) {\n+            continue;\n+        }\n+\n+        const double reproj_err_1 = project_error(R1, t1, point_w, pts1[col]);\n+        const double reproj_err_2 = project_error(R2, t2, point_w, pts2[col]);\n+        if (reproj_err_1 > kMaxReprojectionErrorPx || reproj_err_2 > kMaxReprojectionErrorPx) {\n+            continue;\n+        }\n+\n+        bool too_close = false;\n+        for (const auto& existing_pt : accepted_cur_points) {\n+            if (cv::norm(existing_pt - pts2[col]) < kMinFeatureDistance) {\n+                too_close = true;\n+                break;\n+            }\n+        }\n+        if (too_close) {\n+            continue;\n+        }\n+\n+        const int landmark_id = next_landmark_id_++;\n+        landmarks_[landmark_id] = Landmark{\n+            cv::Point3f(static_cast<float>(point_w[0]),\n+                        static_cast<float>(point_w[1]),\n+                        static_cast<float>(point_w[2])),\n+            2\n+        };\n+        accepted_cur_points.push_back(pts2[col]);\n+        accepted_landmark_ids.push_back(landmark_id);\n+        ++appended;\n+    }\n+\n+    return appended;\n+}\n+\n+void VisualOdometryTracker::AddLandmarksFromMotion(\n+    const cv::Mat& prev_gray, const cv::Mat& cur_gray,\n+    const cv::Mat& prev_R, const cv::Mat& prev_t,\n+    const cv::Mat& cur_R, const cv::Mat& cur_t,\n+    const std::vector<cv::Point2f>& occupied_prev,\n+    std::vector<cv::Point2f>& cur_points,\n+    std::vector<int>& cur_ids) {\n+    if (cur_points.size() >= static_cast<size_t>(kTargetActiveTracks)) {\n+        return;\n+    }\n+\n+    const cv::Mat prev_center = CameraPositionFromPose(prev_R, prev_t);\n+    const cv::Mat cur_center = CameraPositionFromPose(cur_R, cur_t);\n+    if (cv::norm(cur_center - prev_center) < 0.02) {\n+        return;\n+    }\n+\n+    std::vector<cv::Point2f> candidate_prev;\n+    DetectNewFeatures(\n+        prev_gray,\n+        occupied_prev.empty() ? cur_points : occupied_prev,\n+        candidate_prev,\n+        kMaxFeatureCount - static_cast<int>(cur_points.size())\n+    );\n+\n+    if (candidate_prev.size() < static_cast<size_t>(kMinLandmarksForTracking)) {\n+        return;\n+    }\n+\n+    std::vector<cv::Point2f> candidate_cur;\n+    std::vector<uchar> candidate_status;\n+    TrackPoints(prev_gray, cur_gray, candidate_prev, candidate_cur, candidate_status);\n+\n+    std::vector<cv::Point2f> filtered_prev;\n+    std::vector<cv::Point2f> filtered_cur;\n+    filtered_prev.reserve(candidate_prev.size());\n+    filtered_cur.reserve(candidate_prev.size());\n+\n+    for (size_t i = 0; i < candidate_prev.size(); ++i) {\n+        if (!candidate_status.empty() && !candidate_status[i]) {\n+            continue;\n+        }\n+\n+        bool duplicate = false;\n+        for (const auto& existing_pt : cur_points) {\n+            if (cv::norm(existing_pt - candidate_cur[i]) < kMinFeatureDistance) {\n+                duplicate = true;\n+                break;\n+            }\n+        }\n+        if (duplicate) {\n+            continue;\n+        }\n+\n+        filtered_prev.push_back(candidate_prev[i]);\n+        filtered_cur.push_back(candidate_cur[i]);\n+    }\n+\n+    AppendTriangulatedLandmarks(\n+        filtered_prev, filtered_cur,\n+        prev_R, prev_t,\n+        cur_R, cur_t,\n+        cur_points, cur_ids\n+    );\n+}\n+\n+cv::Mat VisualOdometryTracker::ComposeProjectionMatrix(const cv::Mat& R, const cv::Mat& t) const {\n+    cv::Mat Rt;\n+    cv::hconcat(R, t, Rt);\n+    return K_ * Rt;\n+}\n+\n+cv::Mat VisualOdometryTracker::CameraPositionFromPose(const cv::Mat& R, const cv::Mat& t) const {\n+    return -R.t() * t;\n+}\n+\n+bool VisualOdometryTracker::IsInsideImage(const cv::Point2f& pt, const cv::Size& size, int border) {\n+    return pt.x >= border && pt.y >= border &&\n+           pt.x < static_cast<float>(size.width - border) &&\n+           pt.y < static_cast<float>(size.height - border);\n+}\n+\n+double VisualOdometryTracker::ComputeMedian(std::vector<double> values) {\n+    if (values.empty()) {\n+        return 0.0;\n+    }\n+\n+    const size_t mid = values.size() / 2;\n+    std::nth_element(values.begin(), values.begin() + mid, values.end());\n+    double median = values[mid];\n+    if (values.size() % 2 == 0) {\n+        std::nth_element(values.begin(), values.begin() + mid - 1, values.end());\n+        median = 0.5 * (median + values[mid - 1]);\n+    }\n+    return median;\n+}\n+\n+}  // namespace tracker\n+}  // namespace deepvo\n*** Delete File: /home/schrieffer/FxxkVO/include/deepvo/visualizer.h\n*** Add File: /home/schrieffer/FxxkVO/include/deepvo/visualizer.h\n+#pragma once\n+\n+#include <opencv2/opencv.hpp>\n+\n+#include <string>\n+#include <vector>\n+\n+namespace deepvo {\n+namespace visualization {\n+\n+class Visualizer2D {\n+ public:\n+    explicit Visualizer2D(const std::string& window_name);\n+    ~Visualizer2D();\n+\n+    bool ShowFrame(cv::Mat& frame,\n+                   const std::vector<cv::Point2f>& tracked_points,\n+                   const cv::Mat& position,\n+                   const std::string& status_text);\n+\n+ private:\n+    std::string window_name_;\n+};\n+\n+}  // namespace visualization\n+}  // namespace deepvo\n*** Delete File: /home/schrieffer/FxxkVO/src/visualizer.cpp\n*** Add File: /home/schrieffer/FxxkVO/src/visualizer.cpp\n+#include \"deepvo/visualizer.h\"\n+\n+#include <iostream>\n+\n+namespace deepvo {\n+namespace visualization {\n+\n+Visualizer2D::Visualizer2D(const std::string& window_name)\n+    : window_name_(window_name) {\n+    cv::namedWindow(window_name_, cv::WINDOW_AUTOSIZE);\n+}\n+\n+Visualizer2D::~Visualizer2D() {\n+    cv::destroyWindow(window_name_);\n+}\n+\n+bool Visualizer2D::ShowFrame(cv::Mat& frame,\n+                             const std::vector<cv::Point2f>& tracked_points,\n+                             const cv::Mat& position,\n+                             const std::string& status_text) {\n+    for (const auto& pt : tracked_points) {\n+        cv::circle(frame, pt, 3, cv::Scalar(0, 255, 0), cv::FILLED);\n+    }\n+\n+    if (!position.empty() && position.rows == 3 && position.cols == 1) {\n+        const std::string pos_str = cv::format(\n+            \"Pos: [%.2f, %.2f, %.2f]\",\n+            position.at<double>(0), position.at<double>(1), position.at<double>(2));\n+        cv::putText(frame, pos_str, cv::Point(20, 36),\n+                    cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 255), 2);\n+    }\n+\n+    cv::putText(frame, status_text, cv::Point(20, 70),\n+                cv::FONT_HERSHEY_SIMPLEX, 0.65, cv::Scalar(255, 200, 0), 2);\n+\n+    cv::imshow(window_name_, frame);\n+\n+    if (cv::waitKey(30) == 27) {\n+        std::cout << \"[Info] User interrupted the tracking.\" << std::endl;\n+        return false;\n+    }\n+\n+    return true;\n+}\n+\n+}  // namespace visualization\n+}  // namespace deepvo\n*** Delete File: /home/schrieffer/FxxkVO/app/main.cpp\n*** Add File: /home/schrieffer/FxxkVO/app/main.cpp\n+/**\n+ * @file main.cpp\n+ * @brief Main entry point for the C++ DeepVO pipeline.\n+ */\n+\n+#include <algorithm>\n+#include <fstream>\n+#include <iostream>\n+#include <string>\n+#include <vector>\n+\n+#include <opencv2/opencv.hpp>\n+\n+#include \"deepvo/tracker.h\"\n+#include \"deepvo/visualizer.h\"\n+\n+namespace {\n+\n+cv::Mat BuildIntrinsics(double width, double height, int argc, char* argv[]) {\n+    if (argc == 7) {\n+        return (cv::Mat_<double>(3, 3) <<\n+            std::stod(argv[3]), 0.0, std::stod(argv[5]),\n+            0.0, std::stod(argv[4]), std::stod(argv[6]),\n+            0.0, 0.0, 1.0);\n+    }\n+\n+    const double cx = width * 0.5;\n+    const double cy = height * 0.5;\n+    const double focal = 0.9 * std::max(width, height);\n+    return (cv::Mat_<double>(3, 3) <<\n+        focal, 0.0, cx,\n+        0.0, focal, cy,\n+        0.0, 0.0, 1.0);\n+}\n+\n+}  // namespace\n+\n+int main(int argc, char* argv[]) {\n+    std::cout << \"  DeepVO Sparse Monocular Engine Initialized   \" << std::endl;\n+\n+    if (argc != 3 && argc != 7) {\n+        std::cerr << \"[Error] Invalid arguments.\" << std::endl;\n+        std::cerr << \"Usage: ./deepvo_app <input_video_path> <output_csv_path> [fx fy cx cy]\" << std::endl;\n+        return -1;\n+    }\n+\n+    const std::string video_source = argv[1];\n+    const std::string output_csv = argv[2];\n+\n+    cv::VideoCapture cap;\n+    if (video_source == \"0\") {\n+        cap.open(0);\n+    } else {\n+        cap.open(video_source);\n+    }\n+\n+    if (!cap.isOpened()) {\n+        std::cerr << \"[Error] Cannot open video stream: \" << video_source << std::endl;\n+        return -1;\n+    }\n+\n+    const double frame_width = std::max(1.0, cap.get(cv::CAP_PROP_FRAME_WIDTH));\n+    const double frame_height = std::max(1.0, cap.get(cv::CAP_PROP_FRAME_HEIGHT));\n+    const cv::Mat K = BuildIntrinsics(frame_width, frame_height, argc, argv);\n+    std::cout << \"[Info] Using intrinsics:\\n\" << K << std::endl;\n+\n+    deepvo::tracker::VisualOdometryTracker tracker(K);\n+    deepvo::visualization::Visualizer2D viewer(\"DeepVO - Sparse VO\");\n+\n+    std::ofstream traj_file(output_csv);\n+    if (!traj_file.is_open()) {\n+        std::cerr << \"[Error] Could not open trajectory CSV for writing: \" << output_csv << std::endl;\n+        return -1;\n+    }\n+    traj_file << \"x,y,z\\n\";\n+\n+    cv::Mat frame;\n+    while (true) {\n+        cap >> frame;\n+        if (frame.empty()) {\n+            std::cout << \"[Info] End of video stream.\" << std::endl;\n+            break;\n+        }\n+\n+        if (!tracker.ProcessFrame(frame)) {\n+            continue;\n+        }\n+\n+        const cv::Mat position = tracker.GetCurrentPosition();\n+        if (!position.empty() && position.rows == 3 && position.cols == 1) {\n+            traj_file << position.at<double>(0) << \",\"\n+                      << position.at<double>(1) << \",\"\n+                      << position.at<double>(2) << \"\\n\";\n+            traj_file.flush();\n+        }\n+\n+        const std::vector<cv::Point2f> tracked_points = tracker.GetTrackedPoints();\n+        if (!viewer.ShowFrame(frame, tracked_points, position, tracker.GetStatusText())) {\n+            break;\n+        }\n+    }\n+\n+    cap.release();\n+    traj_file.close();\n+    std::cout << \"[Info] Shutting down gracefully.\" << std::endl;\n+    return 0;\n+}\n*** Delete File: /home/schrieffer/FxxkVO/scripts/run.sh\n*** Add File: /home/schrieffer/FxxkVO/scripts/run.sh\n+#!/bin/bash\n+# ---------------------------------------------------------------------------\n+# DeepVO launch script.\n+# ---------------------------------------------------------------------------\n+\n+POSE_DIR=\"./data/poses\"\n+POSE_FILE=\"${POSE_DIR}/trajectory.csv\"\n+CPP_EXECUTABLE=\"./build/deepvo_app\"\n+PYTHON_VIEWER=\"./scripts/viewer_3d.py\"\n+PYTHON_EXECUTABLE=\"./venv/bin/python\"\n+\n+if [ $# -ne 1 ] && [ $# -ne 5 ]; then\n+    echo \"Usage: ./scripts/run.sh <input_video_path> [fx fy cx cy]\"\n+    exit 1\n+fi\n+\n+VIDEO_PATH=\"$1\"\n+EXTRA_ARGS=()\n+if [ $# -eq 5 ]; then\n+    EXTRA_ARGS=(\"$2\" \"$3\" \"$4\" \"$5\")\n+fi\n+\n+mkdir -p \"${POSE_DIR}\"\n+\n+if [ -f \"${POSE_FILE}\" ]; then\n+    rm \"${POSE_FILE}\"\n+fi\n+touch \"${POSE_FILE}\"\n+\n+echo \"  Starting DeepVO Launch Sequence      \"\n+\n+cleanup() {\n+    echo -e \"\\n[Launch Script] Shutting down DeepVO system...\"\n+    kill \"${PYTHON_PID}\" 2>/dev/null\n+    exit 0\n+}\n+\n+trap cleanup SIGINT EXIT\n+\n+echo \"[Launch Script] Starting Python 3D Visualizer in background...\"\n+\"${PYTHON_EXECUTABLE}\" \"${PYTHON_VIEWER}\" \"${POSE_FILE}\" &\n+PYTHON_PID=$!\n+\n+sleep 1\n+\n+echo \"[Launch Script] Igniting C++ VO Engine...\"\n+\"${CPP_EXECUTABLE}\" \"${VIDEO_PATH}\" \"${POSE_FILE}\" \"${EXTRA_ARGS[@]}\"\n+\n+wait \"${PYTHON_PID}\"\n*** End Patch\n",
+          "timestamp": "2026-04-07T07:45:10.038Z"
+        },
+        {
+          "type": "assistant",
+          "text": "核心代码已经替换成新的 VO 管线了。现在先跑编译，把接口和实现层面的错误清掉，再决定要不要继续补一轮稳定性修正。",
+          "timestamp": "2026-04-07T07:47:45.821Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "cmake --build build -j4",
+            "max_output_tokens": 6000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:47:45.829Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git diff --stat",
+            "max_output_tokens": 3000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:47:45.831Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "write_stdin",
+          "input": {
+            "max_output_tokens": 6000,
+            "session_id": 49910,
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:48:41.664Z"
+        },
+        {
+          "type": "assistant",
+          "text": "构建已经过了，说明接口闭环没问题。我再做两件小事：确认 `run.sh` 还能直接执行，以及快速看一下新代码里有没有明显的行为风险需要立刻补。",
+          "timestamp": "2026-04-07T07:49:36.918Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "ls -l scripts/run.sh",
+            "max_output_tokens": 1000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:49:36.922Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "./build/deepvo_app",
+            "max_output_tokens": 2000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:49:36.924Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我补一个必要修正：bootstrap 阶段不能把原点反复写进轨迹文件，否则可视化会被一长串零点污染。顺手把启动脚本权限也恢复成可执行。",
+          "timestamp": "2026-04-07T07:50:36.701Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "apply_patch",
+          "input": "*** Begin Patch\n*** Update File: /home/schrieffer/FxxkVO/include/deepvo/tracker.h\n@@\n     cv::Mat GetCurrentT() const;\n     cv::Mat GetCurrentPosition() const;\n     std::vector<cv::Point2f> GetTrackedPoints() const;\n     std::string GetStatusText() const;\n+    bool HasActivePose() const;\n     int GetVisibleTrackCount() const;\n     int GetLandmarkCount() const;\n*** Update File: /home/schrieffer/FxxkVO/src/tracker.cpp\n@@\n std::string VisualOdometryTracker::GetStatusText() const {\n     return status_text_;\n }\n \n+bool VisualOdometryTracker::HasActivePose() const {\n+    return stage_ == Stage::kTracking;\n+}\n+\n int VisualOdometryTracker::GetVisibleTrackCount() const {\n     return static_cast<int>(GetTrackedPoints().size());\n }\n*** Update File: /home/schrieffer/FxxkVO/app/main.cpp\n@@\n-        const cv::Mat position = tracker.GetCurrentPosition();\n-        if (!position.empty() && position.rows == 3 && position.cols == 1) {\n+        const cv::Mat position = tracker.GetCurrentPosition();\n+        if (tracker.HasActivePose() &&\n+            !position.empty() && position.rows == 3 && position.cols == 1) {\n             traj_file << position.at<double>(0) << \",\"\n                       << position.at<double>(1) << \",\"\n                       << position.at<double>(2) << \"\\n\";\n             traj_file.flush();\n         }\n*** End Patch\n",
+          "timestamp": "2026-04-07T07:50:42.921Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "chmod +x scripts/run.sh",
+            "max_output_tokens": 1000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:52:25.326Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "cmake --build build -j4",
+            "max_output_tokens": 6000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:52:25.335Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "write_stdin",
+          "input": {
+            "max_output_tokens": 6000,
+            "session_id": 51282,
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:53:19.763Z"
+        },
+        {
+          "type": "assistant",
+          "text": "最后做一轮轻验证：确认启动脚本权限和 CLI 行为都正常，然后我给你收敛成结果和剩余硬限制。",
+          "timestamp": "2026-04-07T07:54:16.651Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "ls -l scripts/run.sh",
+            "max_output_tokens": 1000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:54:16.652Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "./scripts/run.sh",
+            "max_output_tokens": 2000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:54:16.659Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "exec_command",
+          "input": {
+            "cmd": "git diff -- app/main.cpp include/deepvo/tracker.h src/tracker.cpp include/deepvo/visualizer.h src/visualizer.cpp scripts/run.sh",
+            "max_output_tokens": 12000,
+            "workdir": "/home/schrieffer/FxxkVO",
+            "yield_time_ms": 1000
+          },
+          "timestamp": "2026-04-07T07:54:16.659Z"
+        },
+        {
+          "type": "tool_use",
+          "name": "update_plan",
+          "input": {
+            "explanation": "核心重构、接口调整和本地构建验证已经完成。当前实现已经从伪尺度的2D-2D累计位姿切换到 bootstrap + 稀疏地图 + PnP 跟踪的单目 VO 流程。",
+            "plan": [
+              {
+                "status": "completed",
+                "step": "重构 tracker 头文件和状态机，定义地图点、bootstrap、PnP 跟踪与重建所需数据结构"
+              },
+              {
+                "status": "completed",
+                "step": "重写 tracker.cpp 的 VO 主流程：初始化、LK 跟踪、RANSAC/PnP、三角化增量建图、丢失恢复"
+              },
+              {
+                "status": "completed",
+                "step": "改 main/run 接口，支持更合理的内参初始化和参数传递，并增强可视化状态输出"
+              },
+              {
+                "status": "completed",
+                "step": "编译验证并做一次静态检查，确认项目至少能稳定构建"
+              }
+            ]
+          },
+          "timestamp": "2026-04-07T07:55:14.577Z"
+        },
+        {
+          "type": "assistant",
+          "text": "我已经把核心 VO 管线做了重构。原来 [src/tracker.cpp](/home/schrieffer/FxxkVO/src/tracker.cpp) 是 `KLT + Essential Matrix + fake_scale` 的逐帧累计，这套东西本身就容易炸。我现在改成了更像样的单目稀疏 VO：\n\n- `bootstrap` 阶段先等足够视差，再用两帧恢复初始位姿并三角化出第一批 3D 地图点。\n- 正常跟踪阶段不再做 2D-2D 伪尺度累计，而是用 `LK` 跟踪已有地图点，然后走 `3D-2D solvePnPRansac + iterative refine` 求位姿。\n- 每帧会尝试基于相邻帧增量补点，持续扩充稀疏地图，同时做前后向光流检查、正深度过滤、视差角过滤和重投影误差过滤。\n\n主要改动在 [include/deepvo/tracker.h](/home/schrieffer/FxxkVO/include/deepvo/tracker.h) 和 [src/tracker.cpp](/home/schrieffer/FxxkVO/src/tracker.cpp)。入口 [app/main.cpp](/home/schrieffer/FxxkVO/app/main.cpp) 也改了，支持 `./deepvo_app <video> <csv> [fx fy cx cy]`，如果你不给内参，会按视频分辨率自动构一个比原来硬编码更合理的内参矩阵。轨迹输出现在写的是相机中心位置，不再直接拿外参里的 `t` 乱写。2D 可视化接口也更新了，见 [include/deepvo/visualizer.h](/home/schrieffer/FxxkVO/include/deepvo/visualizer.h) 和 [src/visualizer.cpp](/home/schrieffer/FxxkVO/src/visualizer.cpp)，会显示当前位置和跟踪状态。启动脚本 [scripts/run.sh](/home/schrieffer/FxxkVO/scripts/run.sh) 也修成了真正可传视频路径的版本，并恢复了可执行权限。\n\n我已经本地编过，`cmake --build build -j4` 通过，`./build/deepvo_app` 和 `./scripts/run.sh` 的 CLI 行为也正常。剩下一个硬限制我直接讲明：这仍然是单目 VO，没有真实标定和外部尺度源时，绝对尺度依旧不可观，只能做到“更稳定的 up-to-scale 轨迹”，但相比你原来的实现，位姿解算逻辑已经不是一个量级了。\n\n如果你要继续往“最优表现”推，下一刀我建议直接上这两个方向之一：\n1. 加真正的相机标定输入和去畸变。\n2. 接一个滑窗 BA，把现在的稀疏地图和位姿再做局部优化。",
+          "timestamp": "2026-04-07T07:56:18.938Z"
+        }
+      ],
+      "total_additions": 760,
+      "total_deletions": 245,
+      "accepted_lines": 759,
+      "overriden_lines": 0
+    }
+  }
+}
