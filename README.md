@@ -1,4 +1,4 @@
-# FxxkVO: Asynchronous Monocular Visual Odometry
+# LiteVO: Asynchronous Monocular Visual Odometry
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![C++14](https://img.shields.io/badge/C++-14%2B-00599C?logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
@@ -10,7 +10,7 @@
 
 [中文版本 (Chinese Version)](README_ch.md)
 
-**FxxkVO** is a lightweight, industrial-grade Monocular Visual Odometry (VO) system built from scratch in C++. It features a strictly decoupled multithreaded architecture, separating high-speed frontend tracking from heavy backend non-linear optimization (Bundle Adjustment).
+**LiteVO** is a lightweight, industrial-grade Monocular Visual Odometry (VO) system built from scratch in C++. It features a strictly decoupled multithreaded architecture, separating high-speed frontend tracking from heavy backend non-linear optimization (Bundle Adjustment).
 
 
 ## Key Features
@@ -81,7 +81,7 @@ We provide a unified shell script to launch both the C++ engine and the Python v
 ## Project Structure
 
 ```text
-FxxkVO/
+LiteVO/
 ├── app/
 │   └── main.cpp                  # C++ Engine entry point
 ├── include/deepvo/

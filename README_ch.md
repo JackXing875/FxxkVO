@@ -1,4 +1,4 @@
-# FxxkVO: 异步单目视觉里程计
+# LiteVO: 异步单目视觉里程计
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![C++14](https://img.shields.io/badge/C++-14%2B-00599C?logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
@@ -10,7 +10,7 @@
 
 [English Version](README.md)
 
-**FxxkVO** 是一个从零开始使用 C++ 构建的轻量级、工业级单目视觉里程计 (VO) 系统。它采用严格解耦的多线程架构，将高速的前端追踪与计算密集的后端非线性优化 (光束法平差 / Bundle Adjustment) 彻底分离。
+**LiteVO** 是一个从零开始使用 C++ 构建的轻量级、工业级单目视觉里程计 (VO) 系统。它采用严格解耦的多线程架构，将高速的前端追踪与计算密集的后端非线性优化 (光束法平差 / Bundle Adjustment) 彻底分离。
 
 ## 核心特性
 
@@ -80,7 +80,7 @@ make -j4
 ## 项目结构 (Project Structure)
 
 ```text
-FxxkVO/
+LiteVO/
 ├── app/
 │   └── main.cpp                  # C++ 引擎主入口
 ├── include/deepvo/
